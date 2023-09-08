@@ -141,10 +141,3 @@ export const input = ElementFactory.createFunction<HTMLInputElement, HTMLInputPr
 export const textarea = ElementFactory.createFunction<HTMLTextAreaElement, HTMLTextAreaProperties>(html, "textarea", HTMLTextAreaElement);
 export const button = ElementFactory.createFunction<HTMLButtonElement, HTMLButtonProperties>(html, "button", HTMLButtonElement);
 export const canvas = ElementFactory.createFunction<HTMLCanvasElement, HTMLCanvasProperties>(html, "canvas", HTMLCanvasElement);
-
-//  sample here.
-div(
-    span("Hello"),
-    span({ style: { color: "red" } }, "World"),
-    canvas({ width: 100, height: 100 })
-)

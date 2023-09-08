@@ -11,10 +11,12 @@ export type ElementProperties<T> = {
     children?: Factory<Node>[],
 }
 
+type StyledElement = Element & { style: CSSStyleDeclaration };
+
 type ElementNamespace = "http://www.w3.org/1999/xhtml" | "http://www.w3.org/2000/svg" | "http://www.w3.org/1998/Math/MathML";
 
 export class ElementFactory<
-    T extends Element & { style: CSSStyleDeclaration },
+    T extends StyledElement,
     Properties extends ElementProperties<T>
 > extends ConfigureFactory<T, Properties> {
 
@@ -75,7 +77,7 @@ export class ElementFactory<
      * @param type the type of element
      * @returns a user friendly, well typed function for creating a specific element type.
      */
-    static createFunction<T extends HTMLElement, P extends ElementProperties<T>>(namespace: ElementNamespace, tagName: string, type: new () => T) {
+    static createFunction<T extends StyledElement, P extends ElementProperties<T>>(namespace: ElementNamespace, tagName: string, type: new () => T) {
         function create(propertiesOrFirstChild: P, ...otherChildren: (string | Factory<Node>)[]): Factory<T> {
             let properties: P | undefined;
             if (propertiesOrFirstChild instanceof Factory || typeof propertiesOrFirstChild === "string") {
@@ -92,7 +94,7 @@ export class ElementFactory<
     }
 }
 
-type CreateFunction<T extends HTMLElement, P extends ElementProperties<T>> = {
+type CreateFunction<T extends StyledElement, P extends ElementProperties<T>> = {
     (properties: P, ...children: (string | Factory<Node>)[]): Factory<T>,
     //  properties are optional IF no properties are actually required.
     (...children: {} extends P ? (string | Factory<Node>)[] : never): Factory<T>,
