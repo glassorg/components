@@ -1,4 +1,4 @@
-import { ElementFactory, ElementProperties } from "../html/ElementFactory.js";
+import { ElementFactory, ElementProperties } from "../dom/ElementFactory.js";
 
 const svg = "http://www.w3.org/2000/svg";
 

@@ -1,5 +1,5 @@
 import { Factory } from "./Factory.js";
-import { assignIfDifferent } from "./utility/objectFunctions.js";
+import { assignIfDifferent } from "./functions.js";
 
 export class ConfigureFactory<T, Properties = Partial<T>> extends Factory<T> {
 

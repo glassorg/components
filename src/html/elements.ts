@@ -1,5 +1,5 @@
-import { ElementProperties } from "./ElementFactory.js";
-import { ElementFactory } from "./ElementFactory.js";
+import { ElementProperties } from "../dom/ElementFactory.js";
+import { ElementFactory } from "../dom/ElementFactory.js";
 
 const html = "http://www.w3.org/1999/xhtml";
 

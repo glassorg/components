@@ -1,6 +1,6 @@
-import { Factory } from "../Factory.js";
-import { ConfigureFactory } from "../ConfigureFactory.js";
-import { assignIfDifferent } from "../utility/objectFunctions.js";
+import { Factory } from "../core/Factory.js";
+import { ConfigureFactory } from "../core/ConfigureFactory.js";
+import { assignIfDifferent } from "../core/functions.js";
 import { TextFactory } from "./TextFactory.js";
 
 export type ElementProperties<T> = {
