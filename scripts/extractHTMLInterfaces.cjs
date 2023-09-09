@@ -2,33 +2,54 @@ const ts = require("typescript")
 const fs = require("fs")
 const path = require("path")
 
-const copyrightNotice = `/*******************************************************************************
-Do not modify directly! This file was generated automatically from lib.dom.d.ts,
+const copyrightNotice = `/***************************************************************
+This file was generated automatically from lib.dom.d.ts,
 which is distributed by Microsoft under the Apache 2.0 license. 
-*******************************************************************************/`
+***************************************************************/
+`
 
 const debug = false
 
 const typeScriptDir = require.resolve("typescript")
 const libDomPath = path.join(path.dirname(typeScriptDir), "lib.dom.d.ts")
+const libDomSource = fs.readFileSync(libDomPath, { encoding: "utf-8" })
 
-let elementInterfaces = parseInterfaces(
-    fs.readFileSync(libDomPath, { encoding: "utf-8" }),
-    node => isHTMLElementName(getName(node))
+fs.writeFileSync(
+    "./output/propertyInterfaces.ts",
+    `${copyrightNotice}\n${generateInterfaceSource()}\n${getFactorySource()}`,
+    { encoding: "utf-8" }
 )
-if (debug) {
-    let json = JSON.stringify(elementInterfaces, null, 2)
-    fs.writeFileSync("./output/elementInterfaces.json", json, { encoding: "utf-8" })
+
+function generateInterfaceSource() {
+    let elementInterfaces = parseInterfaces(libDomSource, node => isHTMLElementName(getName(node)))
+    if (debug) {
+        fs.writeFileSync(
+            "./output/elementInterfaces.json",
+            JSON.stringify(elementInterfaces, null, 2),
+            { encoding: "utf-8" }
+        )
+    }
+    let propertyInterfaces = elementInterfaces.map(elementInterfaceToPropertyInterface)
+    if (debug) {
+        fs.writeFileSync(
+            "./output/propertyInterfaces.json",
+            JSON.stringify(propertyInterfaces, null, 2),
+            { encoding: "utf-8" }
+        )
+    }
+    return propertyInterfaces.map(interfaceObjToSource).join("\n")
 }
 
-let propertyInterfaces = elementInterfaces.map(elementInterfaceToPropertyInterface)
-if (debug) {
-    let json = JSON.stringify(propertyInterfaces, null, 2)
-    fs.writeFileSync("./output/propertyInterfaces.json", json, { encoding: "utf-8" })
+function getFactorySource() {
+    let tagToElementInterface = parseInterfaces(libDomSource, node => getName(node) === "HTMLElementTagNameMap")[0]
+    let source = ""
+    for (let field of tagToElementInterface.fields) {
+        let { name, type } = field
+        let propertiesType = elementToPropertiesType(type)
+        source += `export const ${name} = ElementFactory.createFunction<${type}, ${propertiesType}>(html, "${name}", ${type});\n`
+    }
+    return source
 }
-
-let propertyInterfacesSource = `${copyrightNotice}\n\n${propertyInterfaces.map(interfaceObjToSource).join("\n")}`
-fs.writeFileSync("./output/propertyInterfaces.ts", propertyInterfacesSource, { encoding: "utf-8" })
 
 
 // ===================================================== //
@@ -37,22 +58,11 @@ function elementInterfaceToPropertyInterface(
     elementInterface
 ) {
     let { name, comment, parentTypes, fields } = elementInterface
-
     return {
-        name: remapType(name),
+        name: elementToPropertiesType(name),
         comment,
-        parentTypes: parentTypes.filter(isHTMLElementName).map(remapType),
+        parentTypes: parentTypes.filter(isHTMLElementName).map(elementToPropertiesType),
         fields: fields.filter(field => !isArrowType(field.type))
-    }
-
-    function isArrowType(typeName) {
-        return typeName.indexOf(") =>") > -1
-    }
-
-    function remapType(typeName) {
-        if (typeName === "HTMLElement")
-            return "HTMLElementProperties"
-        return typeName.replace("Element", "Properties")
     }
 }
 
@@ -66,7 +76,7 @@ function interfaceObjToSource(interfaceObj) {
     // if (comment)
     //     source += `/** ${interfaceObj.comment} */\n`
 
-    source += `interface ${name}`
+    source += `export interface ${name}`
     if (parentTypes.length > 0)
         source += ` extends ${parentTypes.join(", ")} `
     source += ' {\n'
@@ -128,6 +138,16 @@ function isHTMLElementName(name) {
     return name.startsWith("HTML") && name.endsWith("Element")
 }
 
+function isArrowType(typeName) {
+    return typeName.indexOf(") =>") > -1
+}
+
+function elementToPropertiesType(typeName) {
+    if (typeName === "HTMLElement")
+        return "HTMLElementProperties"
+    return typeName.replace("Element", "Properties")
+}
+
 // ===================================================== //
 
 /**
@@ -152,10 +172,10 @@ function getName(node) {
 }
 
 function getType(source, node) {
-    return getSource(source, node.type).trim()
+    return getNodeSource(source, node.type).trim()
 }
 
-function getSource(source, node) {
+function getNodeSource(source, node) {
     let { pos, end } = node
     return source.substring(pos, end)
 }
@@ -163,7 +183,7 @@ function getSource(source, node) {
 function getDocString(source, node) {
     if (!node.jsDoc || node.jsDoc.length == 0)
         return undefined
-    return getSource(source, node.jsDoc[0]).trim()
+    return getNodeSource(source, node.jsDoc[0]).trim()
 }
 
 function getDocStringComment(source, node) {
@@ -185,7 +205,7 @@ function getParentTypes(source, node) {
     for (let clause of node.heritageClauses) {
         // console.log(getSource(source, clause))
         for (let type of clause.types) {
-            types.push(getSource(source, type).trim())
+            types.push(getNodeSource(source, type).trim())
         }
     }
     return types
