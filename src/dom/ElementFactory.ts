@@ -9,7 +9,7 @@ export type ElementProperties<T> = {
     className?: string;
     id?: string;
     slot?: string;
-    children?: Factory<Node>[],
+    children: Factory<Node>[],
 }
 
 type StyledElement = Element & { style: CSSStyleDeclaration };
@@ -91,18 +91,20 @@ export class ElementFactory<
             properties.children = otherChildren.map(child => typeof child === "string" ? new TextFactory(child) : child);
             return new ElementFactory<T, P>(namespace, tagName, type, properties) as Factory<T>;
         }
-        return create as CreateFunction<T, P>;
+        return create as unknown as CreateFunction<T, P>;
     }
 }
 
-type ChildrenType<T extends StyledElement, P extends ElementProperties<T>> =
-    Factory<Node>[] extends P["children"] ? (string | Factory<Node>)[] :
-    P["children"] extends Factory<Node>[] ? P["children"] :
-    never[];
+type AddStringIfTextAllowed<T> = T extends Factory<Node>[] ?
+    (Factory<Text>[] extends T ? (string | T[number])[] : T) :
+    T;
 
-type CreateFunction<T extends StyledElement, P extends ElementProperties<T>> = {} extends P ? {
+type ChildrenType<T extends StyledElement, P extends ElementProperties<T>> =
+    AddStringIfTextAllowed<P["children"]>
+
+type CreateFunction<T extends StyledElement, P extends ElementProperties<T>> = { children } extends P ? {
     (properties: Simplify<Omit<P, "children">>, ...children: ChildrenType<T, P>): Factory<T>,
-    (...children: (string | Factory<Node>)[]): Factory<T>,
+    (...children: ChildrenType<T, P>): Factory<T>,
 } : {
     (properties: Simplify<Omit<P, "children">>, ...children: ChildrenType<T, P>): Factory<T>,
 };

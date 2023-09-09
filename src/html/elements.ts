@@ -1,3 +1,4 @@
+import { Factory } from "../core/Factory.js";
 import { ElementProperties } from "../dom/ElementFactory.js";
 import { ElementFactory } from "../dom/ElementFactory.js";
 
@@ -135,9 +136,17 @@ interface HTMLCanvasProperties extends HTMLElementProperties {
     height: number;
 }
 
+interface HTMLScriptElementProperties extends HTMLElementProperties {
+    style?: never;
+    className?: never;
+    slot?: never;
+    children: Factory<Text>[];
+}
+
 export const div = ElementFactory.createFunction<HTMLDivElement, HTMLElementProperties>(html, "div", HTMLDivElement);
 export const span = ElementFactory.createFunction<HTMLSpanElement, HTMLElementProperties>(html, "span", HTMLSpanElement);
 export const input = ElementFactory.createFunction<HTMLInputElement, HTMLInputProperties>(html, "input", HTMLInputElement);
 export const textarea = ElementFactory.createFunction<HTMLTextAreaElement, HTMLTextAreaProperties>(html, "textarea", HTMLTextAreaElement);
 export const button = ElementFactory.createFunction<HTMLButtonElement, HTMLButtonProperties>(html, "button", HTMLButtonElement);
 export const canvas = ElementFactory.createFunction<HTMLCanvasElement, HTMLCanvasProperties>(html, "canvas", HTMLCanvasElement);
+export const script = ElementFactory.createFunction<HTMLScriptElement, HTMLScriptElementProperties>(html, "script", HTMLScriptElement);
