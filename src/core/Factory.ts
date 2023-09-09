@@ -1,8 +1,9 @@
+import { Constructor } from "./types.js";
 
-export abstract class Factory<T> {
+export abstract class Factory<T extends object> {
 
     constructor(
-        protected readonly type: new () => T,
+        protected readonly type: Constructor<T>,
     ) {
     }
 

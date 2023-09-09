@@ -1,8 +1,8 @@
-import { ElementFactory, ElementProperties } from "../dom/ElementFactory.js";
+import { ElementProperties, element } from "../dom/ElementFactory.js";
 
 const svg = "http://www.w3.org/2000/svg";
 
-type SVGElementProperties = ElementProperties<SVGElement>;
+type SVGElementProperties = ElementProperties;
 
 interface SVGCircleProperties extends SVGElementProperties {
     cx: number
@@ -11,4 +11,4 @@ interface SVGCircleProperties extends SVGElementProperties {
     children: never
 }
 
-export const circle = ElementFactory.createFunction<SVGCircleElement, SVGCircleProperties>(svg, "circle", SVGCircleElement);
+export const circle = element<SVGCircleElement, SVGCircleProperties>(svg, "circle", SVGCircleElement);
