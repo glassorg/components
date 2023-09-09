@@ -1,11 +1,10 @@
 import { Factory } from "../core/Factory.js";
+import { Constructor } from "../core/types.js";
 import { ElementProperties } from "../dom/ElementFactory.js";
-import { ElementFactory } from "../dom/ElementFactory.js";
+import { element } from "../dom/ElementFactory.js";
 import "./events.js";
 
-const html = "http://www.w3.org/1999/xhtml";
-
-type HTMLElementProperties = ElementProperties<HTMLElement>;
+type HTMLElementProperties = ElementProperties;
 
 interface HTMLInputProperties extends HTMLElementProperties {
     /** Sets or retrieves a comma-separated list of content types. */
@@ -151,10 +150,25 @@ interface HTMLScriptElementProperties extends HTMLElementProperties {
     slot?: never;
 }
 
-export const div = ElementFactory.createFunction<HTMLDivElement, HTMLElementProperties>(html, "div", HTMLDivElement);
-export const span = ElementFactory.createFunction<HTMLSpanElement, HTMLElementProperties>(html, "span", HTMLSpanElement);
-export const input = ElementFactory.createFunction<HTMLInputElement, HTMLInputProperties>(html, "input", HTMLInputElement);
-export const textarea = ElementFactory.createFunction<HTMLTextAreaElement, HTMLTextAreaProperties>(html, "textarea", HTMLTextAreaElement);
-export const button = ElementFactory.createFunction<HTMLButtonElement, HTMLButtonProperties>(html, "button", HTMLButtonElement);
-export const canvas = ElementFactory.createFunction<HTMLCanvasElement, HTMLCanvasProperties>(html, "canvas", HTMLCanvasElement);
-export const script = ElementFactory.createFunction<HTMLScriptElement, HTMLScriptElementProperties>(html, "script", HTMLScriptElement);
+//  define the property types for each tag in this map.
+interface HTMLPropertyMap extends Record<keyof HTMLElementTagNameMap, HTMLElementProperties> {
+    div: HTMLElementProperties,
+    span: HTMLElementProperties,
+    input: HTMLInputProperties,
+    textarea: HTMLTextAreaProperties,
+    button: HTMLButtonProperties,
+    canvas: HTMLCanvasProperties,
+    script: HTMLScriptElementProperties,
+}
+
+function htmlElement<TagName extends keyof HTMLElementTagNameMap, Type extends Constructor<HTMLElementTagNameMap[TagName]>>(tagName: TagName, type: Type) {
+    return element<HTMLElementTagNameMap[TagName], HTMLPropertyMap[TagName]>("http://www.w3.org/1999/xhtml", tagName, type);
+}
+
+export const div = htmlElement("div", HTMLDivElement);
+export const span = htmlElement("span", HTMLSpanElement);
+export const input = htmlElement("input", HTMLInputElement);
+export const textarea = htmlElement("textarea", HTMLTextAreaElement);
+export const button = htmlElement("button", HTMLButtonElement);
+export const canvas = htmlElement("canvas", HTMLCanvasElement);
+export const script = htmlElement("script", HTMLScriptElement);

@@ -1,10 +1,11 @@
 import { Factory } from "./Factory.js";
 import { assignIfDifferent } from "./functions.js";
+import { Constructor } from "./types.js";
 
 export abstract class ConfigureFactory<T extends object, Properties = Partial<T>> extends Factory<T> {
 
     constructor(
-        type: new () => T,
+        type: Constructor<T>,
         protected readonly properties: Properties,
     ) {
         super(type);

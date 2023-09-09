@@ -2,9 +2,9 @@ import { Factory } from "../core/Factory.js";
 import { ConfigureFactory } from "../core/ConfigureFactory.js";
 import { assignIfDifferent } from "../core/functions.js";
 import { TextFactory } from "./TextFactory.js";
-import { Simplify } from "../core/types.js";
+import { Constructor, Simplify } from "../core/types.js";
 
-export type ElementProperties<T> = {
+export type ElementProperties = {
     style?: Partial<CSSStyleDeclaration>,
     className?: string;
     id?: string;
@@ -18,13 +18,13 @@ type ElementNamespace = "http://www.w3.org/1999/xhtml" | "http://www.w3.org/2000
 
 export class ElementFactory<
     T extends StyledElement,
-    Properties extends ElementProperties<T>
+    Properties extends ElementProperties
 > extends ConfigureFactory<T, Properties> {
 
     constructor(
-        protected readonly namespace: ElementNamespace,
-        protected readonly tagName: string,
-        componentConstructor: new () => T,
+        private readonly namespace: ElementNamespace,
+        private readonly tagName: string,
+        componentConstructor: Constructor<T>,
         properties: Properties
     ) {
         super(componentConstructor, properties);
@@ -72,40 +72,43 @@ export class ElementFactory<
         }
     }
 
-    /**
-     * @param namespace the element namespace
-     * @param tagName  the element tag name
-     * @param type the type of element
-     * @returns a user friendly, well typed function for creating a specific element type.
-     */
-    static createFunction<T extends StyledElement, P extends ElementProperties<T>>(namespace: ElementNamespace, tagName: string, type: new () => T) {
-        function create(propertiesOrFirstChild: P, ...otherChildren: (string | Factory<Node>)[]): Factory<T> {
-            let properties: P | undefined;
-            if (propertiesOrFirstChild instanceof Factory || typeof propertiesOrFirstChild === "string") {
-                otherChildren.unshift(propertiesOrFirstChild);
-                properties = {} as P;
-            }
-            else {
-                properties = propertiesOrFirstChild;
-            }
-            properties.children = otherChildren.map(child => typeof child === "string" ? new TextFactory(child) : child);
-            return new ElementFactory<T, P>(namespace, tagName, type, properties) as Factory<T>;
+}
+
+// const foo = document.createElement("foo");
+
+/**
+ * @param namespace the element namespace
+ * @param tagName  the element tag name
+ * @param type the type of element
+ * @returns a user friendly, well typed function for creating a specific element type.
+ */
+export function element<T extends StyledElement, P extends ElementProperties>(namespace: ElementNamespace, tagName: string, type: Constructor<T>, factoryType = ElementFactory): CreateFunction<T, P> {
+    function create(propertiesOrFirstChild: P, ...otherChildren: (string | Factory<Node>)[]): Factory<T> {
+        let properties: P | undefined;
+        if (propertiesOrFirstChild instanceof Factory || typeof propertiesOrFirstChild === "string") {
+            otherChildren.unshift(propertiesOrFirstChild);
+            properties = {} as P;
         }
-        return create as unknown as CreateFunction<T, P>;
+        else {
+            properties = propertiesOrFirstChild;
+        }
+        properties.children = otherChildren.map(child => typeof child === "string" ? new TextFactory(child) : child);
+        return new factoryType<T, P>(namespace, tagName, type, properties) as Factory<T>;
     }
+    return create as unknown as CreateFunction<T, P>;
 }
 
 type AddStringIfTextAllowed<T> = T extends Factory<Node>[] ?
     (Factory<Text>[] extends T ? (string | T[number])[] : T) :
     T;
 
-type ChildrenType<T extends StyledElement, P extends ElementProperties<T>> =
+type ChildrenType<P extends ElementProperties> =
     AddStringIfTextAllowed<P["children"]>
 
-export type CreateFunction<T extends StyledElement, P extends ElementProperties<T>> = { children } extends P ? {
-    (properties: Simplify<Omit<P, "children">>, ...children: ChildrenType<T, P>): Factory<T>,
-    (...children: ChildrenType<T, P>): Factory<T>,
+export type CreateFunction<T extends StyledElement, P extends ElementProperties> = { children } extends P ? {
+    (properties: Simplify<Omit<P, "children">>, ...children: ChildrenType<P>): Factory<T>,
+    (...children: ChildrenType<P>): Factory<T>,
 } : {
-    (properties: Simplify<Omit<P, "children">>, ...children: ChildrenType<T, P>): Factory<T>,
+    (properties: Simplify<Omit<P, "children">>, ...children: ChildrenType<P>): Factory<T>,
 };
 

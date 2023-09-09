@@ -14,6 +14,4 @@ function helloWorld() {
 document.body.appendChild(helloWorld().build());
 
 customElements.define("custom-test", class CustomTest extends HTMLElement {
-
-
 });

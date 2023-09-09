@@ -33,3 +33,7 @@ export type Callback<T> = (value: T) => void;
 export type Unobserve = () => void;
 export type Constructor<T extends object> = new (...args: any[]) => T;
 export type ClassExtender<BaseType extends object, NewInterface extends object> = (base: Constructor<BaseType>) => Constructor<BaseType & NewInterface>;
+
+export type Equals<X, Y> =
+    (<T>() => T extends X ? 1 : 2) extends
+    (<T>() => T extends Y ? 1 : 2) ? X : never;
