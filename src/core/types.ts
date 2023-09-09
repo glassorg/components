@@ -34,6 +34,9 @@ export type Unobserve = () => void;
 export type Constructor<T extends object> = new (...args: any[]) => T;
 export type ClassExtender<BaseType extends object, NewInterface extends object> = (base: Constructor<BaseType>) => Constructor<BaseType & NewInterface>;
 
-export type Equals<X, Y> =
-    (<T>() => T extends X ? 1 : 2) extends
-    (<T>() => T extends Y ? 1 : 2) ? X : never;
+type UnionToIntersection<U> =
+    (U extends any ? (k: U) => void : never) extends ((k: infer I) => void) ? I : never
+
+export type NoUnion<Key> =
+    // If this is a simple type UnionToIntersection<Key> will be the same type, otherwise it will an intersection of all types in the union and probably will not extend `Key`
+    [Key] extends [UnionToIntersection<Key>] ? Key : never;

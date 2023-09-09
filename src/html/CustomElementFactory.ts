@@ -1,7 +1,7 @@
 import { Component } from "../core/Component.js";
-import { ConfigureFactory } from "../core/ConfigureFactory.js";
+// import { ConfigureFactory } from "../core/ConfigureFactory.js";
 import { Constructor } from "../core/types.js";
-import { CreateFunction, ElementFactory, ElementProperties } from "../dom/ElementFactory.js";
+import { CreateFunction, ElementFactory, ElementProperties, StyledElement } from "../dom/ElementFactory.js";
 
 type CustomElement<P> = Component<P> & HTMLElement;
 
@@ -23,9 +23,13 @@ export class CustomElementFactory<
         node.properties = properties;
     }
 
-    // public static createFunction<T extends CustomElement<P>, P extends ElementProperties>(): CreateFunction<T,P> {
-    //     throw "";
-    // }
+}
 
+export function customElement<P extends ElementProperties, Extends extends keyof HTMLElementTagNameMap>(tagName: string): CreateFunction<HTMLElementTagNameMap[Extends], P> {
+    // TODO: create the correct class here.
+    // class MyClass extends 
+
+    // return element
+    throw "";
 }
 

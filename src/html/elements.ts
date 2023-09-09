@@ -1,5 +1,5 @@
 import { Factory } from "../core/Factory.js";
-import { Constructor } from "../core/types.js";
+import { Constructor, NoUnion } from "../core/types.js";
 import { ElementProperties } from "../dom/ElementFactory.js";
 import { element } from "../dom/ElementFactory.js";
 import "./events.js";
@@ -161,14 +161,26 @@ interface HTMLPropertyMap extends Record<keyof HTMLElementTagNameMap, HTMLElemen
     script: HTMLScriptElementProperties,
 }
 
-function htmlElement<TagName extends keyof HTMLElementTagNameMap, Type extends Constructor<HTMLElementTagNameMap[TagName]>>(tagName: TagName, type: Type) {
-    return element<HTMLElementTagNameMap[TagName], HTMLPropertyMap[TagName]>("http://www.w3.org/1999/xhtml", tagName, type);
+export const htmlElementToType = {
+    span: HTMLSpanElement,
+    div: HTMLDivElement,
+    input: HTMLInputElement,
+    form: HTMLFormElement,
+    textarea: HTMLTextAreaElement,
+    button: HTMLButtonElement,
+    canvas: HTMLCanvasElement,
+    script: HTMLScriptElement,
+
+} as const satisfies { [K in keyof HTMLElementTagNameMap]?: Constructor<HTMLElementTagNameMap[K]> };
+
+function htmlElement<TagName extends keyof typeof htmlElementToType>(tagName: NoUnion<TagName>) {
+    return element<HTMLElementTagNameMap[TagName], HTMLPropertyMap[TagName]>("http://www.w3.org/1999/xhtml", tagName, htmlElementToType[tagName] as Constructor<HTMLElementTagNameMap[TagName]>);
 }
 
-export const div = htmlElement("div", HTMLDivElement);
-export const span = htmlElement("span", HTMLSpanElement);
-export const input = htmlElement("input", HTMLInputElement);
-export const textarea = htmlElement("textarea", HTMLTextAreaElement);
-export const button = htmlElement("button", HTMLButtonElement);
-export const canvas = htmlElement("canvas", HTMLCanvasElement);
-export const script = htmlElement("script", HTMLScriptElement);
+export const div = htmlElement("div");
+export const span = htmlElement("span");
+export const input = htmlElement("input");
+export const textarea = htmlElement("textarea");
+export const button = htmlElement("button");
+export const canvas = htmlElement("canvas");
+export const script = htmlElement("script");
