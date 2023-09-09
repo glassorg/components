@@ -137,10 +137,17 @@ interface HTMLCanvasProperties extends HTMLElementProperties {
 }
 
 interface HTMLScriptElementProperties extends HTMLElementProperties {
+    src?: string;
+    type?: string;
+    children: Factory<Text>[];
+    async?: boolean;
+    crossOrigin?: string | null;
+    defer?: boolean;
+    integrity?: string;
+    noModule?: boolean;
     style?: never;
     className?: never;
     slot?: never;
-    children: Factory<Text>[];
 }
 
 export const div = ElementFactory.createFunction<HTMLDivElement, HTMLElementProperties>(html, "div", HTMLDivElement);
