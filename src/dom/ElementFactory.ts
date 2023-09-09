@@ -2,13 +2,14 @@ import { Factory } from "../core/Factory.js";
 import { ConfigureFactory } from "../core/ConfigureFactory.js";
 import { assignIfDifferent } from "../core/functions.js";
 import { TextFactory } from "./TextFactory.js";
+import { Simplify } from "../core/types.js";
 
 export type ElementProperties<T> = {
     style?: Partial<CSSStyleDeclaration>,
     className?: string;
     id?: string;
     slot?: string;
-    children?: Factory<Node>[],
+    children: Factory<Node>[],
 }
 
 type StyledElement = Element & { style: CSSStyleDeclaration };
@@ -33,13 +34,13 @@ export class ElementFactory<
         return document.createElementNS(this.namespace, this.tagName) as T;
     }
 
-    protected override configure(component: T, { style, children, ...properties }: Properties): void {
-        assignIfDifferent(component, properties);
+    protected override configure(node: T, { style, children, ...properties }: Properties): void {
+        assignIfDifferent(node, properties);
         if (style) {
-            assignIfDifferent(component.style, style);
+            assignIfDifferent(node.style, style);
         }
         if (children) {
-            this.buildChildren(component, children);
+            this.buildChildren(node, children);
         }
     }
 
@@ -90,12 +91,21 @@ export class ElementFactory<
             properties.children = otherChildren.map(child => typeof child === "string" ? new TextFactory(child) : child);
             return new ElementFactory<T, P>(namespace, tagName, type, properties) as Factory<T>;
         }
-        return create as CreateFunction<T, P>;
+        return create as unknown as CreateFunction<T, P>;
     }
 }
 
-type CreateFunction<T extends StyledElement, P extends ElementProperties<T>> = {
-    (properties: P, ...children: (string | Factory<Node>)[]): Factory<T>,
-    //  properties are optional IF no properties are actually required.
-    (...children: {} extends P ? (string | Factory<Node>)[] : never): Factory<T>,
-}
+type AddStringIfTextAllowed<T> = T extends Factory<Node>[] ?
+    (Factory<Text>[] extends T ? (string | T[number])[] : T) :
+    T;
+
+type ChildrenType<T extends StyledElement, P extends ElementProperties<T>> =
+    AddStringIfTextAllowed<P["children"]>
+
+export type CreateFunction<T extends StyledElement, P extends ElementProperties<T>> = { children } extends P ? {
+    (properties: Simplify<Omit<P, "children">>, ...children: ChildrenType<T, P>): Factory<T>,
+    (...children: ChildrenType<T, P>): Factory<T>,
+} : {
+    (properties: Simplify<Omit<P, "children">>, ...children: ChildrenType<T, P>): Factory<T>,
+};
+
