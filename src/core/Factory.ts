@@ -7,8 +7,8 @@ export abstract class Factory<T> {
     }
 
     /**
-     * Builds a new component to this factories specification.
-     * @param recycle Component of the same type to reuse if available.
+     * Builds a new node to this factories specification.
+     * @param recycle node of the same type to reuse if available.
      */
     public build(recycle?: T): T {
         return recycle ?? this.construct();
@@ -18,8 +18,8 @@ export abstract class Factory<T> {
         return new this.type();
     }
 
-    public isInstance(component: unknown): component is T {
-        return component?.constructor === this.type;
+    public isInstance(node: unknown): node is T {
+        return node?.constructor === this.type;
     }
 
 }

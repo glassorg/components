@@ -1,6 +1,7 @@
 import { Factory } from "../core/Factory.js";
 import { ElementProperties } from "../dom/ElementFactory.js";
 import { ElementFactory } from "../dom/ElementFactory.js";
+import "./events.js";
 
 const html = "http://www.w3.org/1999/xhtml";
 

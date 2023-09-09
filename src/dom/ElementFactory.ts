@@ -34,13 +34,13 @@ export class ElementFactory<
         return document.createElementNS(this.namespace, this.tagName) as T;
     }
 
-    protected override configure(component: T, { style, children, ...properties }: Properties): void {
-        assignIfDifferent(component, properties);
+    protected override configure(node: T, { style, children, ...properties }: Properties): void {
+        assignIfDifferent(node, properties);
         if (style) {
-            assignIfDifferent(component.style, style);
+            assignIfDifferent(node.style, style);
         }
         if (children) {
-            this.buildChildren(component, children);
+            this.buildChildren(node, children);
         }
     }
 
@@ -102,9 +102,10 @@ type AddStringIfTextAllowed<T> = T extends Factory<Node>[] ?
 type ChildrenType<T extends StyledElement, P extends ElementProperties<T>> =
     AddStringIfTextAllowed<P["children"]>
 
-type CreateFunction<T extends StyledElement, P extends ElementProperties<T>> = { children } extends P ? {
+export type CreateFunction<T extends StyledElement, P extends ElementProperties<T>> = { children } extends P ? {
     (properties: Simplify<Omit<P, "children">>, ...children: ChildrenType<T, P>): Factory<T>,
     (...children: ChildrenType<T, P>): Factory<T>,
 } : {
     (properties: Simplify<Omit<P, "children">>, ...children: ChildrenType<T, P>): Factory<T>,
 };
+

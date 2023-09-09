@@ -1,4 +1,6 @@
 
+export type StringKeyof<T> = Exclude<keyof T, symbol | number>;
+
 export type Primitive = string | number | boolean | null | undefined;
 export type Collection = Array<unknown> | Map<unknown, unknown> | Set<unknown>
 export type TypedArray = Uint8Array | Int8Array
@@ -26,3 +28,8 @@ export type OptionalKeys<T extends object> = Exclude<{
     ? never
     : K
 }[keyof T], undefined>
+
+export type Callback<T> = (value: T) => void;
+export type Unobserve = () => void;
+export type Constructor<T extends object> = new (...args: any[]) => T;
+export type ClassExtender<BaseType extends object, NewInterface extends object> = (base: Constructor<BaseType>) => Constructor<BaseType & NewInterface>;
