@@ -2,6 +2,7 @@ import { Factory } from "../core/Factory.js";
 import { ConfigureFactory } from "../core/ConfigureFactory.js";
 import { assignIfDifferent } from "../core/functions.js";
 import { TextFactory } from "./TextFactory.js";
+import { Simplify } from "../core/types.js";
 
 export type ElementProperties<T> = {
     style?: Partial<CSSStyleDeclaration>,
@@ -94,8 +95,14 @@ export class ElementFactory<
     }
 }
 
-type CreateFunction<T extends StyledElement, P extends ElementProperties<T>> = {
-    (properties: P, ...children: (string | Factory<Node>)[]): Factory<T>,
-    //  properties are optional IF no properties are actually required.
-    (...children: {} extends P ? (string | Factory<Node>)[] : never): Factory<T>,
-}
+type ChildrenType<T extends StyledElement, P extends ElementProperties<T>> =
+    Factory<Node>[] extends P["children"] ? (string | Factory<Node>)[] :
+    P["children"] extends Factory<Node>[] ? P["children"] :
+    never[];
+
+type CreateFunction<T extends StyledElement, P extends ElementProperties<T>> = {} extends P ? {
+    (properties: Simplify<Omit<P, "children">>, ...children: ChildrenType<T, P>): Factory<T>,
+    (...children: (string | Factory<Node>)[]): Factory<T>,
+} : {
+    (properties: Simplify<Omit<P, "children">>, ...children: ChildrenType<T, P>): Factory<T>,
+};

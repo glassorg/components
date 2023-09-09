@@ -6,7 +6,7 @@ function helloWorld() {
     return div(
         span({ style: { color: "blue" } }, "Hello"),
         " ",
-        span({ style: { color: "red" } }, "World")
+        span({ style: { color: "red" } }, "World"),
     )
 }
 
