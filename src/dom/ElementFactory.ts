@@ -22,8 +22,8 @@ export class ElementFactory<
 > extends ConfigureFactory<T, Properties> {
 
     constructor(
-        private readonly namespace: ElementNamespace,
-        private readonly tagName: string,
+        protected readonly namespace: ElementNamespace,
+        protected readonly tagName: string,
         componentConstructor: Constructor<T>,
         properties: Properties
     ) {
@@ -82,7 +82,15 @@ export class ElementFactory<
  * @param type the type of element
  * @returns a user friendly, well typed function for creating a specific element type.
  */
-export function element<T extends StyledElement, P extends ElementProperties>(namespace: ElementNamespace, tagName: string, type: Constructor<T>, factoryType = ElementFactory): CreateFunction<T, P> {
+export function element<T extends StyledElement, P extends ElementProperties>(
+    namespace: ElementNamespace,
+    tagName: string,
+    type: Constructor<T>,
+    createFactory = (namespace: ElementNamespace,
+        tagName: string,
+        type: Constructor<T>,
+        properties: P): Factory<T> => new ElementFactory(namespace, tagName, type, properties)
+): CreateFunction<T, P> {
     function create(propertiesOrFirstChild: P, ...otherChildren: (string | Factory<Node>)[]): Factory<T> {
         let properties: P | undefined;
         if (propertiesOrFirstChild instanceof Factory || typeof propertiesOrFirstChild === "string") {
@@ -93,7 +101,7 @@ export function element<T extends StyledElement, P extends ElementProperties>(na
             properties = propertiesOrFirstChild;
         }
         properties.children = otherChildren.map(child => typeof child === "string" ? new TextFactory(child) : child);
-        return new factoryType<T, P>(namespace, tagName, type, properties) as Factory<T>;
+        return createFactory(namespace, tagName, type, properties) as Factory<T>;
     }
     return create as unknown as CreateFunction<T, P>;
 }

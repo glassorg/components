@@ -4,7 +4,7 @@ import { ElementProperties } from "../dom/ElementFactory.js";
 import { element } from "../dom/ElementFactory.js";
 import "./events.js";
 
-type HTMLElementProperties = ElementProperties;
+export type HTMLElementProperties = ElementProperties;
 
 interface HTMLInputProperties extends HTMLElementProperties {
     /** Sets or retrieves a comma-separated list of content types. */
