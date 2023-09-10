@@ -8,67 +8,85 @@ which is distributed by Microsoft under the Apache 2.0 license.
 ***************************************************************/
 `
 
-const debug = false
+const DENT = "    "
 
 const typeScriptDir = require.resolve("typescript")
 const libDomPath = path.join(path.dirname(typeScriptDir), "lib.dom.d.ts")
 const libDomSource = fs.readFileSync(libDomPath, { encoding: "utf-8" })
 
+const interfaces = parseInterfaces(libDomSource)
+const tagToElementInterface = interfaces.find(x => x.name === "HTMLElementTagNameMap")
+
 fs.writeFileSync(
-    "./output/propertyInterfaces.ts",
-    `${copyrightNotice}\n${generateInterfaceSource()}\n${getFactorySource()}`,
+    "./output/elements.html.generated.ts",
+    [
+        copyrightNotice,
+        `import { Constructor } from "../core/types.js";`,
+        `import { ElementProperties } from "../dom/ElementFactory.js";\n`,
+        `type HTMLElementProperties = ElementProperties;\n`,
+        generate_HTMLProperties_source(),
+        generate_HTMLPropertyMap_source(),
+        generate_htmlElementToType_source(),
+        // generateFactorySource(),
+    ].join("\n"),
     { encoding: "utf-8" }
 )
 
-function generateInterfaceSource() {
-    let elementInterfaces = parseInterfaces(libDomSource, node => isHTMLElementName(getName(node)))
-    if (debug) {
-        fs.writeFileSync(
-            "./output/elementInterfaces.json",
-            JSON.stringify(elementInterfaces, null, 2),
-            { encoding: "utf-8" }
-        )
+console.log("\n", generateFactorySource(), "\n")
+
+function generate_HTMLProperties_source() {
+
+    return interfaces
+        .filter(x => isHTMLElementName(x.name) && x.name !== "HTMLElement")
+        .map(elementInterfaceToPropertyInterface)
+        // .filter(x => x.fields.length > 0)
+        .map(interfaceObjToSource).join("\n")
+
+    function elementInterfaceToPropertyInterface(
+        elementInterface
+    ) {
+        let { name, comment, parentTypes, fields } = elementInterface
+        return {
+            name: elementToPropertiesType(name),
+            comment,
+            parentTypes: parentTypes.filter(isHTMLElementName).map(elementToPropertiesType),
+            fields: fields.filter(field => !isArrowType(field.type))
+        }
     }
-    let propertyInterfaces = elementInterfaces.map(elementInterfaceToPropertyInterface)
-    if (debug) {
-        fs.writeFileSync(
-            "./output/propertyInterfaces.json",
-            JSON.stringify(propertyInterfaces, null, 2),
-            { encoding: "utf-8" }
-        )
-    }
-    return propertyInterfaces.map(interfaceObjToSource).join("\n")
+
 }
 
-function getFactorySource() {
-    let tagToElementInterface = parseInterfaces(libDomSource, node => getName(node) === "HTMLElementTagNameMap")[0]
+function generateFactorySource() {
     let source = ""
     for (let field of tagToElementInterface.fields) {
         let { name, type } = field
-        let propertiesType = elementToPropertiesType(type)
-        source += `export const ${name} = ElementFactory.createFunction<${type}, ${propertiesType}>(html, "${name}", ${type});\n`
+        source += `export const ${name} = htmlElement("${name}");\n`
     }
     return source
 }
 
-
-// ===================================================== //
-
-function elementInterfaceToPropertyInterface(
-    elementInterface
-) {
-    let { name, comment, parentTypes, fields } = elementInterface
-    return {
-        name: elementToPropertiesType(name),
-        comment,
-        parentTypes: parentTypes.filter(isHTMLElementName).map(elementToPropertiesType),
-        fields: fields.filter(field => !isArrowType(field.type))
+function generate_HTMLPropertyMap_source() {
+    let source = "interface HTMLPropertyMap extends Record<keyof HTMLElementTagNameMap, HTMLElementProperties> {\n"
+    for (let field of tagToElementInterface.fields) {
+        let { name, type } = field
+        let propertiesType = elementToPropertiesType(type)
+        source += `${DENT}${name}: ${propertiesType},\n`
     }
+    source += "}\n"
+    return source
+}
+
+function generate_htmlElementToType_source() {
+    let source = "export const htmlElementToType = {\n"
+    for (let field of tagToElementInterface.fields) {
+        let { name, type } = field
+        source += `${DENT}${name}: ${type},\n`
+    }
+    source += "} as const satisfies { [K in keyof HTMLElementTagNameMap]?: Constructor<HTMLElementTagNameMap[K]> };\n"
+    return source
 }
 
 function interfaceObjToSource(interfaceObj) {
-    const DENT = "    "
-
     const { name, comment, parentTypes, fields } = interfaceObj
 
     let source = ""
@@ -76,7 +94,7 @@ function interfaceObjToSource(interfaceObj) {
     // if (comment)
     //     source += `/** ${interfaceObj.comment} */\n`
 
-    source += `export interface ${name}`
+    source += `interface ${name}`
     if (parentTypes.length > 0)
         source += ` extends ${parentTypes.join(", ")} `
     source += ' {\n'
@@ -84,13 +102,31 @@ function interfaceObjToSource(interfaceObj) {
     for (const field of fields) {
         if (field.comment)
             source += `${DENT}/** ${field.comment} */\n`
-        source += `${DENT}${field.name}: ${field.type}; \n`
+        source += `${DENT}${field.name}?: ${field.type}; \n`
     }
 
     source += '}\n'
 
     return source
 }
+
+function isHTMLElementName(name) {
+    if (name === "HTMLOrSVGElement")
+        return false
+    return name.startsWith("HTML") && name.endsWith("Element")
+}
+
+function isArrowType(typeName) {
+    return typeName.indexOf(") =>") > -1
+}
+
+function elementToPropertiesType(typeName) {
+    if (typeName === "HTMLElement")
+        return "HTMLElementProperties"
+    return typeName.replace("Element", "Properties")
+}
+
+// === TS AST Helpers ================================== //
 
 function parseInterfaces(
     source,
@@ -129,26 +165,6 @@ function parseInterfaces(
 
     return interfaces
 }
-
-// ===================================================== //
-
-function isHTMLElementName(name) {
-    if (name === "HTMLOrSVGElement")
-        return false
-    return name.startsWith("HTML") && name.endsWith("Element")
-}
-
-function isArrowType(typeName) {
-    return typeName.indexOf(") =>") > -1
-}
-
-function elementToPropertiesType(typeName) {
-    if (typeName === "HTMLElement")
-        return "HTMLElementProperties"
-    return typeName.replace("Element", "Properties")
-}
-
-// ===================================================== //
 
 /**
  * 
