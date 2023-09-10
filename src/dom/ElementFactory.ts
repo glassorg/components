@@ -4,10 +4,12 @@ import { assignIfDifferent } from "../core/functions.js";
 import { TextFactory } from "./TextFactory.js";
 import { Constructor, Simplify } from "../core/types.js";
 
+export type ElementListeners = { [Key in keyof GlobalEventHandlersEventMap]?: (event: GlobalEventHandlersEventMap[Key]) => void };
 export type ElementProperties = {
     style?: Partial<CSSStyleDeclaration>,
     className?: string;
     id?: string;
+    events?: ElementListeners,
     slot?: string;
     children: Factory<Node>[],
 }
@@ -15,6 +17,8 @@ export type ElementProperties = {
 export type StyledElement = Element & { style: CSSStyleDeclaration };
 
 type ElementNamespace = "http://www.w3.org/1999/xhtml" | "http://www.w3.org/2000/svg" | "http://www.w3.org/1998/Math/MathML";
+
+const oldEventsSymbol = Symbol();
 
 export class ElementFactory<
     T extends StyledElement,
@@ -34,7 +38,30 @@ export class ElementFactory<
         return document.createElementNS(this.namespace, this.tagName) as T;
     }
 
-    protected override configure(node: T, { style, children, ...properties }: Properties): void {
+    protected addEvents(node: T, newEvents?: ElementListeners) {
+        const oldEvents = node[oldEventsSymbol] as ElementListeners | undefined;
+        node[oldEventsSymbol] = newEvents;
+
+        if (oldEvents) {
+            for (let name in oldEvents) {
+                let handler = oldEvents[name];
+                if (handler !== newEvents?.[name]) {
+                    node.removeEventListener(name, handler);
+                }
+            }
+        }
+        if (newEvents) {
+            for (let name in newEvents) {
+                let handler = newEvents[name];
+                if (handler !== oldEvents?.[name]) {
+                    node.addEventListener(name, handler);
+                }
+            }
+        }
+    }
+
+    protected override configure(node: T, { style, children, events, ...properties }: Properties): void {
+        this.addEvents(node, events);
         assignIfDifferent(node, properties);
         if (style) {
             assignIfDifferent(node.style, style);

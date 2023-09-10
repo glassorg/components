@@ -14,10 +14,12 @@ const helloFunctional = customElement((props: MyCustomProps) => {
     return span(
         span({ ...rest, style: { color: "orange", display: "block", ...style } }, `Hello ${name} ${count}`),
         button({
-            onclick() {
-                setCount(count + 1);
+            events: {
+                click(e) {
+                    setCount(count + 2);
+                }
             }
-        } as any, "Click Me")
+        }, "Click Me")
     );
 },);
 
