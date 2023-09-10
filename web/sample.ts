@@ -1,11 +1,11 @@
 
 import * as svg from "../src/svg/elements.js";
 
-import * as html from "../src/html/elements.js";
+import { HTMLElementProperties, html } from "../src/html/elements.js";
 import { customElement } from "../src/html/CustomElementFactory.js";
 import { useState } from "../src/hooks/useState.js";
 
-interface MyCustomProps extends html.HTMLElementProperties {
+interface MyCustomProps extends HTMLElementProperties {
     name: string
 }
 

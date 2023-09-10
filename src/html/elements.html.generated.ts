@@ -4,9 +4,7 @@ which is distributed by Microsoft under the Apache 2.0 license.
 ***************************************************************/
 
 import { Constructor } from "../core/types.js";
-import { ElementProperties } from "../dom/ElementFactory.js";
-
-type HTMLElementProperties = ElementProperties;
+import { HTMLElementProperties, HTMLElementTagNameMapExact } from "./elements.js";
 
 interface HTMLAnchorProperties extends HTMLElementProperties {
     download?: string;
@@ -597,7 +595,7 @@ interface HTMLVideoProperties extends HTMLMediaProperties {
     width?: number;
 }
 
-export interface HTMLPropertyMap extends Record<keyof HTMLElementTagNameMap, HTMLElementProperties> {
+export interface HTMLPropertyMap extends Record<keyof HTMLElementTagNameMapExact, HTMLElementProperties> {
     a: HTMLAnchorProperties,
     abbr: HTMLElementProperties,
     address: HTMLElementProperties,

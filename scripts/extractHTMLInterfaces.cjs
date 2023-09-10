@@ -22,8 +22,7 @@ fs.writeFileSync(
     [
         copyrightNotice,
         `import { Constructor } from "../core/types.js";`,
-        `import { ElementProperties } from "../dom/ElementFactory.js";\n`,
-        `type HTMLElementProperties = ElementProperties;\n`,
+        `import { HTMLElementProperties, HTMLElementTagNameMapExact } from "./elements.js";\n`,
         generate_HTMLProperties_source(),
         generate_HTMLPropertyMap_source(),
         generate_htmlElementToType_source(),
@@ -54,7 +53,7 @@ function generate_HTMLProperties_source() {
 }
 
 function generate_HTMLPropertyMap_source() {
-    let source = "export interface HTMLPropertyMap extends Record<keyof HTMLElementTagNameMap, HTMLElementProperties> {\n"
+    let source = "export interface HTMLPropertyMap extends Record<keyof HTMLElementTagNameMapExact, HTMLElementProperties> {\n"
     for (let field of tagToElementInterface.fields) {
         let { name, type } = field
         let propertiesType = elementToPropertiesType(type)
