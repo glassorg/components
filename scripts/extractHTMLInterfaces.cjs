@@ -66,7 +66,7 @@ function generateFactorySource() {
 }
 
 function generate_HTMLPropertyMap_source() {
-    let source = "interface HTMLPropertyMap extends Record<keyof HTMLElementTagNameMap, HTMLElementProperties> {\n"
+    let source = "export interface HTMLPropertyMap extends Record<keyof HTMLElementTagNameMap, HTMLElementProperties> {\n"
     for (let field of tagToElementInterface.fields) {
         let { name, type } = field
         let propertiesType = elementToPropertiesType(type)
