@@ -28,7 +28,11 @@ interface HTMLPropertyMap extends HTMLPropertyMapGenerated {
 }
 
 function htmlElement<TagName extends keyof typeof htmlElementToType>(tagName: NoUnion<TagName>) {
-    return element<HTMLElementTagNameMap[TagName], HTMLPropertyMap[TagName]>("http://www.w3.org/1999/xhtml", tagName, htmlElementToType[tagName] as Constructor<HTMLElementTagNameMap[TagName]>);
+    return element<HTMLElementTagNameMap[TagName], HTMLPropertyMap[TagName]>(
+        "http://www.w3.org/1999/xhtml",
+        tagName,
+        htmlElementToType[tagName] as Constructor<HTMLElementTagNameMap[TagName]>
+    );
 }
 
 type HTMLElements = { [K in keyof HTMLElementTagNameMap]: CreateFunction<HTMLElementTagNameMap[K], HTMLPropertyMap[K]> };

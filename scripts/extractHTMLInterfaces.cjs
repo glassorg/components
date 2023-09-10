@@ -27,12 +27,9 @@ fs.writeFileSync(
         generate_HTMLProperties_source(),
         generate_HTMLPropertyMap_source(),
         generate_htmlElementToType_source(),
-        // generateFactorySource(),
     ].join("\n"),
     { encoding: "utf-8" }
 )
-
-console.log("\n", generateFactorySource(), "\n")
 
 function generate_HTMLProperties_source() {
 
@@ -54,15 +51,6 @@ function generate_HTMLProperties_source() {
         }
     }
 
-}
-
-function generateFactorySource() {
-    let source = ""
-    for (let field of tagToElementInterface.fields) {
-        let { name, type } = field
-        source += `export const ${name} = htmlElement("${name}");\n`
-    }
-    return source
 }
 
 function generate_HTMLPropertyMap_source() {
