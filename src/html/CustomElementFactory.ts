@@ -40,21 +40,21 @@ export class CustomElementFactory<
 let customElementCount = 0;
 //  if base type is not specified then we extend span.
 export function customElement<P extends ElementProperties>(
-    update: (properties: P) => Factory<HTMLSpanElement & { tagName: "span" }>,
+    update: (this: HTMLSpanElement, properties: P) => Factory<HTMLSpanElement & { tagName: "span" }>,
     options?: { tagName?: string }
 ): CreateFunction<HTMLSpanElement, P>
 //  if base type is specified then we must return a factory of that type from the render function
 export function customElement<P extends ElementProperties, Extends extends keyof typeof htmlElementToType>(
-    update: (properties: P) => Factory<HTMLElementTagNameMapExact[Extends]>,
+    update: (this: HTMLElementTagNameMapExact[Extends], properties: P) => Factory<HTMLElementTagNameMapExact[Extends]>,
     options: { tagName?: string, extends: Extends }
 ): CreateFunction<HTMLElementTagNameMapExact[Extends], P>
 export function customElement<P extends ElementProperties, Extends extends keyof typeof htmlElementToType>(
-    render: (properties: P) => Factory<HTMLElementTagNameMapExact[Extends]>,
+    update: (this: HTMLElementTagNameMapExact[Extends], properties: P) => Factory<HTMLElementTagNameMapExact[Extends]>,
     options: { tagName?: string, extends?: Extends } = {}
 ): CreateFunction<HTMLElementTagNameMapExact[Extends], P> {
     const { tagName = `custom-element-${customElementCount++}` } = options;
     const baseClass = options.extends ? htmlElementToType[options.extends] : HTMLElement;
-    const newFunctionalClass = createFunctionalComponentClass(baseClass, render);
+    const newFunctionalClass = createFunctionalComponentClass(baseClass, update);
     customElements.define(tagName, newFunctionalClass, { extends: options.extends });
     return element<HTMLElementTagNameMapExact[Extends], P>(
         "http://www.w3.org/1999/xhtml",

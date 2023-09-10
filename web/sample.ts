@@ -21,14 +21,26 @@ const helloFunctional = customElement((props: MyCustomProps) => {
             }
         }, "Click Me")
     );
-},);
+});
+
+const growButton = customElement(function ({ children }) {
+    return button({
+        events: {
+            click: (e) => {
+                this.style.width = `${this.clientWidth + 10}px`;
+                this.style.height = `${this.clientHeight + 10}px`;
+            }
+        }
+    }, ...children);
+}, { extends: "button" });
 
 function helloWorld() {
     return div(
         span({ style: { color: "blue" } }, "Hello"),
         " ",
         span({ style: { color: "red" } }, "World"),
-        helloFunctional({ name: "Functional" }, "hello functional content")
+        helloFunctional({ name: "Functional" }, "hello functional content"),
+        growButton("Click to Grow"),
     )
 }
 

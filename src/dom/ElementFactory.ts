@@ -122,11 +122,11 @@ export function element<T extends StyledElement, P extends ElementProperties>(
         let properties: P | undefined;
         if (propertiesOrFirstChild instanceof Factory || typeof propertiesOrFirstChild === "string") {
             otherChildren.unshift(propertiesOrFirstChild);
-            properties = {} as P;
         }
         else {
             properties = propertiesOrFirstChild;
         }
+        properties ??= {} as P;
         properties.children = otherChildren.map(child => typeof child === "string" ? new TextFactory(child) : child);
         return createFactory(namespace, tagName, type, properties) as Factory<T>;
     }

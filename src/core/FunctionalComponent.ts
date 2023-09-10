@@ -69,7 +69,7 @@ export function createFunctionalComponentClass<C extends Component, P extends ob
             this.hookIndex = 0;
             activeFunctionalComponentStack.push(this);
             try {
-                let factory = update(this.properties);
+                let factory = update.call(this, this.properties);
                 factory.build(this as any);
             }
             finally {
