@@ -19,7 +19,7 @@ const helloFunctional = customElement((props: MyCustomProps) => {
             }
         } as any, "Click Me")
     );
-});
+},);
 
 function helloWorld() {
     return div(
