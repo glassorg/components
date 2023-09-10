@@ -39,7 +39,7 @@ export class CustomElementFactory<
 let customElementCount = 0;
 //  if base type is not specified then we extend span.
 export function customElement<P extends ElementProperties>(
-    update: (properties: P) => Factory<HTMLSpanElement>,
+    update: (properties: P) => Factory<HTMLSpanElement & { tagName: "span" }>,
     options?: { tagName?: string }
 ): CreateFunction<HTMLSpanElement, P>
 //  if base type is specified then we must return a factory of that type from the render function
