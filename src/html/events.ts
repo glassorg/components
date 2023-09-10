@@ -13,11 +13,11 @@ declare global {
 
 // extend all Elements so that if extended by web components, they will emit connected/disconnected events.
 HTMLElement.prototype.connectedCallback = function () {
-    console.log(`HTMLElement.prototype.connectedCallback`);
+    console.log(`HTMLElement.prototype.connectedCallback ${this.tagName}`);
     this.dispatchEvent(new CustomEvent("connected"));
 }
 
 HTMLElement.prototype.disconnectedCallback = function () {
-    console.log(`HTMLElement.prototype.disconnectedCallback`);
+    console.log(`HTMLElement.prototype.disconnectedCallback ${this.tagName}`);
     this.dispatchEvent(new CustomEvent("disconnected"));
 }

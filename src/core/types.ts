@@ -29,8 +29,8 @@ export type OptionalKeys<T extends object> = Exclude<{
     : K
 }[keyof T], undefined>
 
-export type Callback<T> = (value: T) => void;
-export type Unobserve = () => void;
+// export type Callback<T> = (value: T) => void;
+// export type Unobserve = () => void;
 export type Constructor<T extends object> = new (...args: any[]) => T;
 export type ClassExtender<BaseType extends object, NewInterface extends object> = (base: Constructor<BaseType>) => Constructor<BaseType & NewInterface>;
 
@@ -40,3 +40,6 @@ type UnionToIntersection<U> =
 export type NoUnion<Key> =
     // If this is a simple type UnionToIntersection<Key> will be the same type, otherwise it will an intersection of all types in the union and probably will not extend `Key`
     [Key] extends [UnionToIntersection<Key>] ? Key : never;
+
+export type CancelCallback = () => void;
+export type RequestCallback = (callback: () => void) => CancelCallback;
