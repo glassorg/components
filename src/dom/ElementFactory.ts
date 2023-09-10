@@ -72,7 +72,8 @@ export class ElementFactory<
     }
 
     protected buildChildren(node: T, childFactories: Factory<Node>[]) {
-        let maybeRecycleChild = node.firstChild;
+        let container = node.shadowRoot ?? node;
+        let maybeRecycleChild = container.firstChild;
         //  build the children recycling any old if possible
         for (let childFactory of childFactories) {
             if (maybeRecycleChild && childFactory.isInstance(maybeRecycleChild)) {
@@ -82,19 +83,19 @@ export class ElementFactory<
             else {
                 const childComponent = childFactory.build();
                 if (maybeRecycleChild) {
-                    node.insertBefore(childComponent, maybeRecycleChild);
-                    node.removeChild(maybeRecycleChild);
+                    container.insertBefore(childComponent, maybeRecycleChild);
+                    container.removeChild(maybeRecycleChild);
                     maybeRecycleChild = childComponent.nextSibling;
                 }
                 else {
-                    node.appendChild(childComponent);
+                    container.appendChild(childComponent);
                 }
             }
         }
         //  remove any left over children
         while (maybeRecycleChild) {
             let nextSibling = maybeRecycleChild.nextSibling;
-            node.removeChild(maybeRecycleChild);
+            container.removeChild(maybeRecycleChild);
             maybeRecycleChild = nextSibling;
         }
     }

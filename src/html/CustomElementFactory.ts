@@ -6,6 +6,8 @@ import { HTMLElementProperties, HTMLElementTagNameMapExact, htmlElementToType } 
 
 type CustomElement<B extends HTMLElement, P extends HTMLElementProperties> = FunctionalComponent<B, P>;
 
+type ShadowMode = boolean; // "open" | "closed";
+
 export class CustomElementFactory<
     T extends CustomElement<HTMLElementTagNameMapExact[E], P>,
     P extends ElementProperties,
@@ -16,18 +18,18 @@ export class CustomElementFactory<
         tagName: string,
         componentConstructor: Constructor<T>,
         properties: P,
-        protected readonly extend?: E
+        protected readonly extend?: E,
+        protected readonly shadow?: boolean
     ) {
         super("http://www.w3.org/1999/xhtml", tagName, componentConstructor, properties);
     }
 
     protected override construct(): T {
-        if (this.extend) {
-            return document.createElement(this.extend, { is: this.tagName }) as T;
+        const element = document.createElement(this.extend ?? this.tagName, { is: this.extend ? this.tagName : undefined }) as T;
+        if (this.shadow) {
+            element.attachShadow({ mode: "open" });
         }
-        else {
-            return document.createElement(this.tagName) as T;
-        }
+        return element;
     }
 
     protected override configure(node: T, properties: P): void {
@@ -41,16 +43,16 @@ let customElementCount = 0;
 //  if base type is not specified then we extend span.
 export function customElement<P extends ElementProperties>(
     update: (this: HTMLSpanElement, properties: P) => Factory<HTMLSpanElement & { tagName: "span" }>,
-    options?: { tagName?: string }
+    options?: { tagName?: string, shadow?: ShadowMode }
 ): CreateFunction<HTMLSpanElement, P>
 //  if base type is specified then we must return a factory of that type from the render function
 export function customElement<P extends ElementProperties, Extends extends keyof typeof htmlElementToType>(
     update: (this: HTMLElementTagNameMapExact[Extends], properties: P) => Factory<HTMLElementTagNameMapExact[Extends]>,
-    options: { tagName?: string, extends: Extends }
+    options: { tagName?: string, shadow?: ShadowMode, extends: Extends }
 ): CreateFunction<HTMLElementTagNameMapExact[Extends], P>
 export function customElement<P extends ElementProperties, Extends extends keyof typeof htmlElementToType>(
     update: (this: HTMLElementTagNameMapExact[Extends], properties: P) => Factory<HTMLElementTagNameMapExact[Extends]>,
-    options: { tagName?: string, extends?: Extends } = {}
+    options: { tagName?: string, shadow?: ShadowMode, extends?: Extends } = {}
 ): CreateFunction<HTMLElementTagNameMapExact[Extends], P> {
     const { tagName = `custom-element-${customElementCount++}` } = options;
     const baseClass = options.extends ? htmlElementToType[options.extends] : HTMLElement;
@@ -60,6 +62,6 @@ export function customElement<P extends ElementProperties, Extends extends keyof
         "http://www.w3.org/1999/xhtml",
         tagName,
         newFunctionalClass as unknown as Constructor<HTMLElementTagNameMapExact[Extends]>,
-        (_namespace, tagName, type, properties) => new CustomElementFactory(tagName, type as any, properties, options.extends) as any
+        (_namespace, tagName, type, properties) => new CustomElementFactory(tagName, type as any, properties, options.extends, options.shadow) as any
     );
 }

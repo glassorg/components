@@ -150,6 +150,12 @@ interface HTMLScriptElementProperties extends HTMLElementProperties {
     slot?: never;
 }
 
+interface HTMLStyleElementProperties extends HTMLElementProperties {
+    media?: string;
+    disabled?: boolean;
+    children: Factory<Text>[];
+}
+
 export type HTMLElementTagNameMapExact = { [Key in keyof HTMLElementTagNameMap]: HTMLElementTagNameMap[Key] & { tagName: Key } };
 
 //  define the property types for each tag in this map.
@@ -161,6 +167,7 @@ interface HTMLPropertyMap extends Record<keyof HTMLElementTagNameMapExact, HTMLE
     button: HTMLButtonProperties,
     canvas: HTMLCanvasProperties,
     script: HTMLScriptElementProperties,
+    style: HTMLStyleElementProperties,
 }
 
 export const htmlElementToType = {
@@ -172,7 +179,7 @@ export const htmlElementToType = {
     button: HTMLButtonElement,
     canvas: HTMLCanvasElement,
     script: HTMLScriptElement,
-
+    style: HTMLStyleElement,
 } as const satisfies { [K in keyof HTMLElementTagNameMapExact]?: Constructor<HTMLElementTagNameMap[K]> };
 
 function htmlElement<TagName extends keyof typeof htmlElementToType>(tagName: NoUnion<TagName>) {
@@ -186,3 +193,4 @@ export const textarea = htmlElement("textarea");
 export const button = htmlElement("button");
 export const canvas = htmlElement("canvas");
 export const script = htmlElement("script");
+export const style = htmlElement("style");
