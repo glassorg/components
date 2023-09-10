@@ -8,7 +8,7 @@ interface MyCustomProps extends HTMLElementProperties {
     name: string
 }
 
-const helloFunctional = customElement("hello-functional", (props: MyCustomProps) => {
+const helloFunctional = customElement((props: MyCustomProps) => {
     const [count, setCount] = useState(0);
     const { name, style, ...rest } = props;
     return span(
@@ -19,7 +19,7 @@ const helloFunctional = customElement("hello-functional", (props: MyCustomProps)
             }
         } as any, "Click Me")
     );
-});
+}, { extends: "span" });
 
 function helloWorld() {
     return div(
@@ -31,7 +31,4 @@ function helloWorld() {
 }
 
 document.body.appendChild(helloWorld().build());
-
-customElements.define("custom-test", class CustomTest extends HTMLElement {
-});
 

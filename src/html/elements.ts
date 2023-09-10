@@ -150,8 +150,10 @@ interface HTMLScriptElementProperties extends HTMLElementProperties {
     slot?: never;
 }
 
+export type HTMLElementTagNameMapExact = { [Key in keyof HTMLElementTagNameMap]: HTMLElementTagNameMap[Key] & { tagName: Key } };
+
 //  define the property types for each tag in this map.
-interface HTMLPropertyMap extends Record<keyof HTMLElementTagNameMap, HTMLElementProperties> {
+interface HTMLPropertyMap extends Record<keyof HTMLElementTagNameMapExact, HTMLElementProperties> {
     div: HTMLElementProperties,
     span: HTMLElementProperties,
     input: HTMLInputProperties,
@@ -171,10 +173,10 @@ export const htmlElementToType = {
     canvas: HTMLCanvasElement,
     script: HTMLScriptElement,
 
-} as const satisfies { [K in keyof HTMLElementTagNameMap]?: Constructor<HTMLElementTagNameMap[K]> };
+} as const satisfies { [K in keyof HTMLElementTagNameMapExact]?: Constructor<HTMLElementTagNameMap[K]> };
 
 function htmlElement<TagName extends keyof typeof htmlElementToType>(tagName: NoUnion<TagName>) {
-    return element<HTMLElementTagNameMap[TagName], HTMLPropertyMap[TagName]>("http://www.w3.org/1999/xhtml", tagName, htmlElementToType[tagName] as Constructor<HTMLElementTagNameMap[TagName]>);
+    return element<HTMLElementTagNameMapExact[TagName], HTMLPropertyMap[TagName]>("http://www.w3.org/1999/xhtml", tagName, htmlElementToType[tagName] as Constructor<HTMLElementTagNameMapExact[TagName]>);
 }
 
 export const div = htmlElement("div");
