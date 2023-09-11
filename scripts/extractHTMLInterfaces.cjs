@@ -30,6 +30,12 @@ fs.writeFileSync(
     { encoding: "utf-8" }
 )
 
+fs.writeFileSync(
+    "./output/factories.html.ts",
+    generate_exportFactories_source(),
+    { encoding: "utf-8" }
+)
+
 function generate_HTMLProperties_source() {
 
     return interfaces
@@ -70,6 +76,19 @@ function generate_htmlElementToType_source() {
         source += `${DENT}${name}: ${type},\n`
     }
     source += "} as const satisfies { [K in keyof HTMLElementTagNameMap]?: Constructor<HTMLElementTagNameMap[K]> };\n"
+    return source
+}
+
+function generate_exportFactories_source() {
+    const bannedTagNames = ["var", "object"]
+    let source = ""
+    for (let field of tagToElementInterface.fields) {
+        let { name, type } = field
+        let exportName = name.charAt(0).toUpperCase() + name.slice(1)
+        if (bannedTagNames.indexOf(name) > -1)
+            exportName += "Tag"
+        source += `export const ${exportName} = htmlElement("${name}");\n`
+    }
     return source
 }
 

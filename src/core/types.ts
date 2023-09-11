@@ -8,16 +8,17 @@ export type TypedArray = Uint8Array | Int8Array
     | Uint32Array | Int32Array
     | Float32Array | Float64Array;
 
-export type Simplify<T> =
-    T extends Primitive | TypedArray | Blob | Function ? T :
-    T extends Array<infer A> ? Array<Simplify<A>> :
-    T extends Set<infer A> ? Set<Simplify<A>> :
-    T extends Map<infer A, infer B> ? Map<Simplify<A>, Simplify<B>> :
-    T extends {} ?
-    {
-        [K in keyof T]: Simplify<T[K]>
-    }
-    : T;
+// This is being used to expand out some massive types and is hanging the compiler.
+export type Simplify<T> = T
+// T extends Primitive | TypedArray | Blob | Function ? T :
+// T extends Array<infer A> ? Array<Simplify<A>> :
+// T extends Set<infer A> ? Set<Simplify<A>> :
+// T extends Map<infer A, infer B> ? Map<Simplify<A>, Simplify<B>> :
+// T extends {} ?
+// {
+//     [K in keyof T]: Simplify<T[K]>
+// }
+// : T;
 
 export type RequiredKeys<T extends object> = { [K in keyof T]-?:
     ({} extends { [P in K]: T[K] } ? never : K)
