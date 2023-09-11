@@ -33,7 +33,7 @@ export class CustomElementFactory<
     }
 
     protected override configure(node: T, properties: P): void {
-        super.addEvents(node, properties.events);
+        super.addEvents(node, properties.on);
         node.properties = properties;
     }
 

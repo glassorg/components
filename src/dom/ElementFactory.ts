@@ -9,7 +9,7 @@ export type ElementProperties = {
     style?: Partial<CSSStyleDeclaration>,
     className?: string;
     id?: string;
-    events?: ElementListeners,
+    on?: ElementListeners,
     slot?: string;
     children: Factory<Node>[],
 }
@@ -60,7 +60,7 @@ export class ElementFactory<
         }
     }
 
-    protected override configure(node: T, { style, children, events, ...properties }: Properties): void {
+    protected override configure(node: T, { style, children, on: events, ...properties }: Properties): void {
         this.addEvents(node, events);
         assignIfDifferent(node, properties);
         if (style) {

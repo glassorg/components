@@ -8,7 +8,7 @@ interface MyCustomProps extends html.HTMLElementProperties {
     name: string
 }
 
-const helloFunctional = customElement((props: MyCustomProps) => {
+const helloFunctionalShadowRoot = customElement((props: MyCustomProps) => {
     const [count, setCount] = useState(0);
     const { name, ...rest } = props;
     return html.span(
@@ -26,7 +26,7 @@ const helloFunctional = customElement((props: MyCustomProps) => {
         `),
         html.span(`Hello ${name} ${count}`),
         html.button({
-            events: {
+            on: {
                 click(e) {
                     setCount(count + 2);
                 }
@@ -37,7 +37,7 @@ const helloFunctional = customElement((props: MyCustomProps) => {
 
 const growButton = customElement(function ({ children }) {
     return html.button({
-        events: {
+        on: {
             click: (e) => {
                 this.style.width = `${this.clientWidth + 10}px`;
                 this.style.height = `${this.clientHeight + 10}px`;
@@ -51,7 +51,7 @@ function helloWorld() {
         html.span("Hello"),
         " ",
         html.span({ style: { color: "red" } }, "World"),
-        helloFunctional({ name: "Functional" }, "hello functional content"),
+        helloFunctionalShadowRoot({ name: "Functional" }, "hello functional content"),
         growButton("Click to Grow"),
     )
 }

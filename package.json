@@ -8,7 +8,7 @@
     "build": "tsc",
     "watch": "run-p watch:*",
     "watch:build": "tsc -w --preserveWatchOutput",
-    "watch:test": "vitest watch src",
+    "--watch:test": "vitest watch src",
     "watch:web": "vite --port 8080",
     "test": "vitest run src"
   },
