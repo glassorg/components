@@ -12,6 +12,9 @@
     "watch:web": "vite --port 8080",
     "test": "vitest run src"
   },
+  "exports": {
+    "./*": "./lib/src/*.js"
+  },
   "devDependencies": {
     "@types/json-schema": "^7.0.12",
     "@types/node": "^20.4.8",

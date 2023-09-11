@@ -142,9 +142,9 @@ type ChildrenType<P extends ElementProperties> =
     AddStringIfTextAllowed<P["children"]>
 
 export type CreateFunction<T extends StyledElement, P extends ElementProperties> = { children } extends P ? {
-    (properties: Simplify<Omit<P, "children">>, ...children: ChildrenType<P>): Factory<T>,
+    (properties: Omit<P, "children">, ...children: ChildrenType<P>): Factory<T>,
     (...children: ChildrenType<P>): Factory<T>,
 } : {
-    (properties: Simplify<Omit<P, "children">>, ...children: ChildrenType<P>): Factory<T>,
+    (properties: Omit<P, "children">, ...children: ChildrenType<P>): Factory<T>,
 };
 
