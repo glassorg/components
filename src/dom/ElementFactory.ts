@@ -9,7 +9,7 @@ export type ElementProperties = {
     style?: Partial<CSSStyleDeclaration>,
     className?: string;
     id?: string;
-    events?: ElementListeners,
+    on?: ElementListeners,
     slot?: string;
     children: Factory<Node>[],
 }
@@ -60,7 +60,7 @@ export class ElementFactory<
         }
     }
 
-    protected override configure(node: T, { style, children, events, ...properties }: Properties): void {
+    protected override configure(node: T, { style, children, on: events, ...properties }: Properties): void {
         this.addEvents(node, events);
         assignIfDifferent(node, properties);
         if (style) {
@@ -142,9 +142,9 @@ type ChildrenType<P extends ElementProperties> =
     AddStringIfTextAllowed<P["children"]>
 
 export type CreateFunction<T extends StyledElement, P extends ElementProperties> = { children } extends P ? {
-    (properties: Simplify<Omit<P, "children">>, ...children: ChildrenType<P>): Factory<T>,
+    (properties: Omit<P, "children">, ...children: ChildrenType<P>): Factory<T>,
     (...children: ChildrenType<P>): Factory<T>,
 } : {
-    (properties: Simplify<Omit<P, "children">>, ...children: ChildrenType<P>): Factory<T>,
+    (properties: Omit<P, "children">, ...children: ChildrenType<P>): Factory<T>,
 };
 
