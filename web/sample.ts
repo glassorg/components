@@ -1,19 +1,20 @@
 
 import * as svg from "../src/svg/elements.js";
-import * as html from "../src/html/elements.js";
+
+import { HTMLElementProperties, Button, Div, Span, Style } from "../src/html/elements.js";
 import { customElement } from "../src/html/CustomElementFactory.js";
 import { useState } from "../src/hooks/useState.js";
 
-interface MyCustomProps extends html.HTMLElementProperties {
+interface MyCustomProps extends HTMLElementProperties {
     name: string
 }
 
 const helloFunctionalShadowRoot = customElement((props: MyCustomProps) => {
     const [count, setCount] = useState(0);
     const { name, ...rest } = props;
-    return html.span(
+    return Span(
         rest,
-        html.style(`
+        Style(`
         :host {
             display: block;
             background: blue;
@@ -24,8 +25,8 @@ const helloFunctionalShadowRoot = customElement((props: MyCustomProps) => {
             color: orange;
         }
         `),
-        html.span(`Hello ${name} ${count}`),
-        html.button({
+        Span(`Hello ${name} ${count}`),
+        Button({
             on: {
                 click(e) {
                     setCount(count + 2);
@@ -36,7 +37,7 @@ const helloFunctionalShadowRoot = customElement((props: MyCustomProps) => {
 }, { shadow: true });
 
 const growButton = customElement(function ({ children }) {
-    return html.button({
+    return Button({
         on: {
             click: (e) => {
                 this.style.width = `${this.clientWidth + 10}px`;
@@ -47,10 +48,10 @@ const growButton = customElement(function ({ children }) {
 }, { extends: "button" });
 
 function helloWorld() {
-    return html.div(
-        html.span("Hello"),
+    return Div(
+        Span("Hello"),
         " ",
-        html.span({ style: { color: "red" } }, "World"),
+        Span({ style: { color: "red" } }, "World"),
         helloFunctionalShadowRoot({ name: "Functional" }, "hello functional content"),
         growButton("Click to Grow"),
     )

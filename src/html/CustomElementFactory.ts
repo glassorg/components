@@ -2,7 +2,8 @@ import { Factory } from "../core/Factory.js";
 import { FunctionalComponent, createFunctionalComponentClass } from "../core/FunctionalComponent.js";
 import { Constructor } from "../core/types.js";
 import { CreateFunction, ElementFactory, ElementProperties, element } from "../dom/ElementFactory.js";
-import { HTMLElementProperties, HTMLElementTagNameMapExact, htmlElementToType } from "./elements.js";
+import { htmlElementToType } from "./elements.html.generated.js";
+import { HTMLElementProperties, HTMLElementTagNameMapExact } from "./elements.js";
 
 type CustomElement<B extends HTMLElement, P extends HTMLElementProperties> = FunctionalComponent<B, P>;
 
