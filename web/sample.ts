@@ -9,7 +9,7 @@ interface MyCustomProps extends HTMLElementProperties {
     name: string
 }
 
-const helloFunctionalShadowRoot = customElement((props: MyCustomProps) => {
+const HelloFunctionalShadowRoot = customElement((props: MyCustomProps) => {
     const [count, setCount] = useState(0);
     const { name, ...rest } = props;
     return Span(
@@ -36,7 +36,7 @@ const helloFunctionalShadowRoot = customElement((props: MyCustomProps) => {
     );
 }, { shadow: true });
 
-const growButton = customElement(function ({ children }) {
+const GrowButton = customElement(function ({ children }) {
     return Button({
         on: {
             click: (e) => {
@@ -47,15 +47,15 @@ const growButton = customElement(function ({ children }) {
     }, ...children);
 }, { extends: "button" });
 
-function helloWorld() {
+function HelloWorld() {
     return Div(
         Span("Hello"),
         " ",
         Span({ style: { color: "red" } }, "World"),
-        helloFunctionalShadowRoot({ name: "Functional" }, "hello functional content"),
-        growButton("Click to Grow"),
+        HelloFunctionalShadowRoot({ name: "Functional" }, "hello functional content"),
+        GrowButton("Click to Grow"),
     )
 }
 
-document.body.appendChild(helloWorld().build());
+document.body.appendChild(HelloWorld().build());
 
