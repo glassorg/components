@@ -6,7 +6,7 @@ which is distributed by Microsoft under the Apache 2.0 license.
 import { Constructor } from "../core/types.js";
 import { HTMLElementProperties, HTMLElementTagNameMapExact } from "./elements.js";
 
-interface HTMLAnchorProperties extends HTMLElementProperties {
+export interface HTMLAnchorProperties extends HTMLElementProperties {
     download?: string;
     /** Sets or retrieves the language code of the object. */
     hreflang?: string;
@@ -21,7 +21,7 @@ interface HTMLAnchorProperties extends HTMLElementProperties {
     type?: string;
 }
 
-interface HTMLAreaProperties extends HTMLElementProperties {
+export interface HTMLAreaProperties extends HTMLElementProperties {
     /** Sets or retrieves a text alternative to the graphic. */
     alt?: string;
     /** Sets or retrieves the coordinates of the object. */
@@ -36,23 +36,23 @@ interface HTMLAreaProperties extends HTMLElementProperties {
     target?: string;
 }
 
-interface HTMLAudioProperties extends HTMLMediaProperties {
+export interface HTMLAudioProperties extends HTMLMediaProperties {
 }
 
-interface HTMLBRProperties extends HTMLElementProperties {
+export interface HTMLBRProperties extends HTMLElementProperties {
 }
 
-interface HTMLBaseProperties extends HTMLElementProperties {
+export interface HTMLBaseProperties extends HTMLElementProperties {
     /** Gets or sets the baseline URL on which relative links are based. */
     href?: string;
     /** Sets or retrieves the window or frame at which to target content. */
     target?: string;
 }
 
-interface HTMLBodyProperties extends HTMLElementProperties {
+export interface HTMLBodyProperties extends HTMLElementProperties {
 }
 
-interface HTMLButtonProperties extends HTMLElementProperties {
+export interface HTMLButtonProperties extends HTMLElementProperties {
     disabled?: boolean;
     /** Overrides the action attribute (where the data on a form is sent) on the parent form element. */
     formAction?: string;
@@ -72,36 +72,36 @@ interface HTMLButtonProperties extends HTMLElementProperties {
     value?: string;
 }
 
-interface HTMLCanvasProperties extends HTMLElementProperties {
+export interface HTMLCanvasProperties extends HTMLElementProperties {
     /** Gets or sets the height of a canvas element on a document. */
     height?: number;
     /** Gets or sets the width of a canvas element on a document. */
     width?: number;
 }
 
-interface HTMLDListProperties extends HTMLElementProperties {
+export interface HTMLDListProperties extends HTMLElementProperties {
 }
 
-interface HTMLDataProperties extends HTMLElementProperties {
+export interface HTMLDataProperties extends HTMLElementProperties {
     value?: string;
 }
 
-interface HTMLDataListProperties extends HTMLElementProperties {
+export interface HTMLDataListProperties extends HTMLElementProperties {
 }
 
-interface HTMLDetailsProperties extends HTMLElementProperties {
+export interface HTMLDetailsProperties extends HTMLElementProperties {
     open?: boolean;
 }
 
-interface HTMLDialogProperties extends HTMLElementProperties {
+export interface HTMLDialogProperties extends HTMLElementProperties {
     open?: boolean;
     returnValue?: string;
 }
 
-interface HTMLDivProperties extends HTMLElementProperties {
+export interface HTMLDivProperties extends HTMLElementProperties {
 }
 
-interface HTMLEmbedProperties extends HTMLElementProperties {
+export interface HTMLEmbedProperties extends HTMLElementProperties {
     /** Sets or retrieves the height of the object. */
     height?: string;
     /** Sets or retrieves a URL to be loaded by the object. */
@@ -111,12 +111,12 @@ interface HTMLEmbedProperties extends HTMLElementProperties {
     width?: string;
 }
 
-interface HTMLFieldSetProperties extends HTMLElementProperties {
+export interface HTMLFieldSetProperties extends HTMLElementProperties {
     disabled?: boolean;
     name?: string;
 }
 
-interface HTMLFormProperties extends HTMLElementProperties {
+export interface HTMLFormProperties extends HTMLElementProperties {
     /** Sets or retrieves a list of character encodings for input data that must be accepted by the server processing the form. */
     acceptCharset?: string;
     /** Sets or retrieves the URL to which the form content is sent for processing. */
@@ -138,19 +138,19 @@ interface HTMLFormProperties extends HTMLElementProperties {
     target?: string;
 }
 
-interface HTMLHRProperties extends HTMLElementProperties {
+export interface HTMLHRProperties extends HTMLElementProperties {
 }
 
-interface HTMLHeadProperties extends HTMLElementProperties {
+export interface HTMLHeadProperties extends HTMLElementProperties {
 }
 
-interface HTMLHeadingProperties extends HTMLElementProperties {
+export interface HTMLHeadingProperties extends HTMLElementProperties {
 }
 
-interface HTMLHtmlProperties extends HTMLElementProperties {
+export interface HTMLHtmlProperties extends HTMLElementProperties {
 }
 
-interface HTMLIFrameProperties extends HTMLElementProperties {
+export interface HTMLIFrameProperties extends HTMLElementProperties {
     allow?: string;
     allowFullscreen?: boolean;
     /** Sets or retrieves the height of the object. */
@@ -167,7 +167,7 @@ interface HTMLIFrameProperties extends HTMLElementProperties {
     width?: string;
 }
 
-interface HTMLImageProperties extends HTMLElementProperties {
+export interface HTMLImageProperties extends HTMLElementProperties {
     /** Sets or retrieves a text alternative to the graphic. */
     alt?: string;
     crossOrigin?: string | null;
@@ -189,7 +189,7 @@ interface HTMLImageProperties extends HTMLElementProperties {
     width?: number;
 }
 
-interface HTMLInputProperties extends HTMLElementProperties {
+export interface HTMLInputProperties extends HTMLElementProperties {
     /** Sets or retrieves a comma-separated list of content types. */
     accept?: string;
     /** Sets or retrieves a text alternative to the graphic. */
@@ -262,20 +262,20 @@ interface HTMLInputProperties extends HTMLElementProperties {
     width?: number;
 }
 
-interface HTMLLIProperties extends HTMLElementProperties {
+export interface HTMLLIProperties extends HTMLElementProperties {
     /** Sets or retrieves the value of a list item. */
     value?: number;
 }
 
-interface HTMLLabelProperties extends HTMLElementProperties {
+export interface HTMLLabelProperties extends HTMLElementProperties {
     /** Sets or retrieves the object to which the given label object is assigned. */
     htmlFor?: string;
 }
 
-interface HTMLLegendProperties extends HTMLElementProperties {
+export interface HTMLLegendProperties extends HTMLElementProperties {
 }
 
-interface HTMLLinkProperties extends HTMLElementProperties {
+export interface HTMLLinkProperties extends HTMLElementProperties {
     as?: string;
     crossOrigin?: string | null;
     disabled?: boolean;
@@ -295,12 +295,12 @@ interface HTMLLinkProperties extends HTMLElementProperties {
     type?: string;
 }
 
-interface HTMLMapProperties extends HTMLElementProperties {
+export interface HTMLMapProperties extends HTMLElementProperties {
     /** Sets or retrieves the name of the object. */
     name?: string;
 }
 
-interface HTMLMediaProperties extends HTMLElementProperties {
+export interface HTMLMediaProperties extends HTMLElementProperties {
     /** Gets or sets a value that indicates whether to start playing the media automatically. */
     autoplay?: boolean;
     /** Gets or sets a flag that indicates whether the client provides a set of controls for the media (in case the developer does not include controls for the player). */
@@ -328,10 +328,10 @@ interface HTMLMediaProperties extends HTMLElementProperties {
     volume?: number;
 }
 
-interface HTMLMenuProperties extends HTMLElementProperties {
+export interface HTMLMenuProperties extends HTMLElementProperties {
 }
 
-interface HTMLMetaProperties extends HTMLElementProperties {
+export interface HTMLMetaProperties extends HTMLElementProperties {
     /** Gets or sets meta-information to associate with httpEquiv or name. */
     content?: string;
     /** Gets or sets information used to bind the value of a content attribute of a meta element to an HTTP response header. */
@@ -341,7 +341,7 @@ interface HTMLMetaProperties extends HTMLElementProperties {
     name?: string;
 }
 
-interface HTMLMeterProperties extends HTMLElementProperties {
+export interface HTMLMeterProperties extends HTMLElementProperties {
     high?: number;
     low?: number;
     max?: number;
@@ -350,21 +350,21 @@ interface HTMLMeterProperties extends HTMLElementProperties {
     value?: number;
 }
 
-interface HTMLModProperties extends HTMLElementProperties {
+export interface HTMLModProperties extends HTMLElementProperties {
     /** Sets or retrieves reference information about the object. */
     cite?: string;
     /** Sets or retrieves the date and time of a modification to the object. */
     dateTime?: string;
 }
 
-interface HTMLOListProperties extends HTMLElementProperties {
+export interface HTMLOListProperties extends HTMLElementProperties {
     reversed?: boolean;
     /** The starting number. */
     start?: number;
     type?: string;
 }
 
-interface HTMLObjectProperties extends HTMLElementProperties {
+export interface HTMLObjectProperties extends HTMLElementProperties {
     /** Sets or retrieves the URL that references the data of the object. */
     data?: string;
     /** Sets or retrieves the height of the object. */
@@ -379,13 +379,13 @@ interface HTMLObjectProperties extends HTMLElementProperties {
     width?: string;
 }
 
-interface HTMLOptGroupProperties extends HTMLElementProperties {
+export interface HTMLOptGroupProperties extends HTMLElementProperties {
     disabled?: boolean;
     /** Sets or retrieves a value that you can use to implement your own label functionality for the object. */
     label?: string;
 }
 
-interface HTMLOptionProperties extends HTMLElementProperties {
+export interface HTMLOptionProperties extends HTMLElementProperties {
     /** Sets or retrieves the status of an option. */
     defaultSelected?: boolean;
     disabled?: boolean;
@@ -399,35 +399,35 @@ interface HTMLOptionProperties extends HTMLElementProperties {
     value?: string;
 }
 
-interface HTMLOutputProperties extends HTMLElementProperties {
+export interface HTMLOutputProperties extends HTMLElementProperties {
     defaultValue?: string;
     name?: string;
     /** Returns the element's current value. Can be set, to change the value. */
     value?: string;
 }
 
-interface HTMLParagraphProperties extends HTMLElementProperties {
+export interface HTMLParagraphProperties extends HTMLElementProperties {
 }
 
-interface HTMLPictureProperties extends HTMLElementProperties {
+export interface HTMLPictureProperties extends HTMLElementProperties {
 }
 
-interface HTMLPreProperties extends HTMLElementProperties {
+export interface HTMLPreProperties extends HTMLElementProperties {
 }
 
-interface HTMLProgressProperties extends HTMLElementProperties {
+export interface HTMLProgressProperties extends HTMLElementProperties {
     /** Defines the maximum, or "done" value for a progress element. */
     max?: number;
     /** Sets or gets the current value of a progress element. The value must be a non-negative number between 0 and the max value. */
     value?: number;
 }
 
-interface HTMLQuoteProperties extends HTMLElementProperties {
+export interface HTMLQuoteProperties extends HTMLElementProperties {
     /** Sets or retrieves reference information about the object. */
     cite?: string;
 }
 
-interface HTMLScriptProperties extends HTMLElementProperties {
+export interface HTMLScriptProperties extends HTMLElementProperties {
     async?: boolean;
     crossOrigin?: string | null;
     /** Sets or retrieves the status of the script. */
@@ -443,7 +443,7 @@ interface HTMLScriptProperties extends HTMLElementProperties {
     type?: string;
 }
 
-interface HTMLSelectProperties extends HTMLElementProperties {
+export interface HTMLSelectProperties extends HTMLElementProperties {
     autocomplete?: AutoFill;
     disabled?: boolean;
     /** Sets or retrieves the number of objects in a collection. */
@@ -462,11 +462,11 @@ interface HTMLSelectProperties extends HTMLElementProperties {
     value?: string;
 }
 
-interface HTMLSlotProperties extends HTMLElementProperties {
+export interface HTMLSlotProperties extends HTMLElementProperties {
     name?: string;
 }
 
-interface HTMLSourceProperties extends HTMLElementProperties {
+export interface HTMLSourceProperties extends HTMLElementProperties {
     height?: number;
     /** Gets or sets the intended media type of the media source. */
     media?: string;
@@ -479,20 +479,20 @@ interface HTMLSourceProperties extends HTMLElementProperties {
     width?: number;
 }
 
-interface HTMLSpanProperties extends HTMLElementProperties {
+export interface HTMLSpanProperties extends HTMLElementProperties {
 }
 
-interface HTMLStyleProperties extends HTMLElementProperties {
+export interface HTMLStyleProperties extends HTMLElementProperties {
     /** Enables or disables the style sheet. */
     disabled?: boolean;
     /** Sets or retrieves the media type. */
     media?: string;
 }
 
-interface HTMLTableCaptionProperties extends HTMLElementProperties {
+export interface HTMLTableCaptionProperties extends HTMLElementProperties {
 }
 
-interface HTMLTableCellProperties extends HTMLElementProperties {
+export interface HTMLTableCellProperties extends HTMLElementProperties {
     /** Sets or retrieves abbreviated text for the object. */
     abbr?: string;
     /** Sets or retrieves the number columns in the table that the object should span. */
@@ -505,12 +505,12 @@ interface HTMLTableCellProperties extends HTMLElementProperties {
     scope?: string;
 }
 
-interface HTMLTableColProperties extends HTMLElementProperties {
+export interface HTMLTableColProperties extends HTMLElementProperties {
     /** Sets or retrieves the number of columns in the group. */
     span?: number;
 }
 
-interface HTMLTableProperties extends HTMLElementProperties {
+export interface HTMLTableProperties extends HTMLElementProperties {
     /** Retrieves the caption object of a table. */
     caption?: HTMLTableCaptionElement | null;
     /** Retrieves the tFoot object of the table. */
@@ -519,16 +519,16 @@ interface HTMLTableProperties extends HTMLElementProperties {
     tHead?: HTMLTableSectionElement | null;
 }
 
-interface HTMLTableRowProperties extends HTMLElementProperties {
+export interface HTMLTableRowProperties extends HTMLElementProperties {
 }
 
-interface HTMLTableSectionProperties extends HTMLElementProperties {
+export interface HTMLTableSectionProperties extends HTMLElementProperties {
 }
 
-interface HTMLTemplateProperties extends HTMLElementProperties {
+export interface HTMLTemplateProperties extends HTMLElementProperties {
 }
 
-interface HTMLTextAreaProperties extends HTMLElementProperties {
+export interface HTMLTextAreaProperties extends HTMLElementProperties {
     autocomplete?: AutoFill;
     /** Sets or retrieves the width of the object. */
     cols?: number;
@@ -560,16 +560,16 @@ interface HTMLTextAreaProperties extends HTMLElementProperties {
     wrap?: string;
 }
 
-interface HTMLTimeProperties extends HTMLElementProperties {
+export interface HTMLTimeProperties extends HTMLElementProperties {
     dateTime?: string;
 }
 
-interface HTMLTitleProperties extends HTMLElementProperties {
+export interface HTMLTitleProperties extends HTMLElementProperties {
     /** Retrieves or sets the text of the object as a string. */
     text?: string;
 }
 
-interface HTMLTrackProperties extends HTMLElementProperties {
+export interface HTMLTrackProperties extends HTMLElementProperties {
     default?: boolean;
     kind?: string;
     label?: string;
@@ -577,13 +577,13 @@ interface HTMLTrackProperties extends HTMLElementProperties {
     srclang?: string;
 }
 
-interface HTMLUListProperties extends HTMLElementProperties {
+export interface HTMLUListProperties extends HTMLElementProperties {
 }
 
-interface HTMLUnknownProperties extends HTMLElementProperties {
+export interface HTMLUnknownProperties extends HTMLElementProperties {
 }
 
-interface HTMLVideoProperties extends HTMLMediaProperties {
+export interface HTMLVideoProperties extends HTMLMediaProperties {
     disablePictureInPicture?: boolean;
     /** Gets or sets the height of the video element. */
     height?: number;

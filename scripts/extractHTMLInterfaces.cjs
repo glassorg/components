@@ -100,7 +100,7 @@ function interfaceObjToSource(interfaceObj) {
     // if (comment)
     //     source += `/** ${interfaceObj.comment} */\n`
 
-    source += `interface ${name}`
+    source += `export interface ${name}`
     if (parentTypes.length > 0)
         source += ` extends ${parentTypes.join(", ")} `
     source += ' {\n'
