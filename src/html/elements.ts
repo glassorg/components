@@ -1,6 +1,6 @@
 import { Factory } from "../core/Factory.js";
 import { Constructor, NoUnion } from "../core/types.js";
-import { CreateFunction, ElementProperties } from "../dom/ElementFactory.js";
+import { ElementProperties } from "../dom/ElementFactory.js";
 import { element } from "../dom/ElementFactory.js";
 import { htmlElementToType, HTMLPropertyMap as HTMLPropertyMapGenerated } from "./elements.html.generated.js";
 import "./events.js";
