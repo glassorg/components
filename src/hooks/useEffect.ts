@@ -1,7 +1,7 @@
-import { FunctionalComponent, getActiveFunctionalComponent } from "../core/FunctionalComponent.js";
+import { FunctionalComponent, getActiveFunctionalComponent } from "../core/FunctionalComponent.js"
 import { arraysEqualShallow } from "../core/functions.js";
 
-export type EffectCallback = () => (void | (() => void));
+export type EffectCallback = () => (void | (() => void))
 type EffectHookState = { dispose?: () => void, dependencies: any[] };
 
 export function useEffect<T extends FunctionalComponent>(callback: EffectCallback, dependencies: any[] = []) {

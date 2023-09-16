@@ -1,6 +1,6 @@
-import { Component } from "./Component.js";
-import { Factory } from "./Factory.js";
-import { objectsEqualShallow, requestAnimationFrameCallback } from "./functions.js";
+import { Component } from "./Component.js"
+import { Factory } from "./Factory.js"
+import { objectsEqualShallow, requestAnimationFrameCallback } from "./functions.js"
 import { Constructor } from "./types.js";
 
 export type FunctionalComponent<BaseType extends Component = Component, Properties extends object = object> = BaseType & {
@@ -80,7 +80,7 @@ export function createFunctionalComponentClass<C extends Component, P extends ob
     return CustomFunctionalComponent as any;
 }
 
-const activeFunctionalComponentStack: FunctionalComponent[] = [];
+const activeFunctionalComponentStack: FunctionalComponent[] = []
 export function getActiveFunctionalComponent() {
     return activeFunctionalComponentStack[activeFunctionalComponentStack.length - 1];
 }

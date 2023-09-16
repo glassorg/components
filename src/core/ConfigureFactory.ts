@@ -1,5 +1,5 @@
-import { Factory } from "./Factory.js";
-import { assignIfDifferent } from "./functions.js";
+import { Factory } from "./Factory.js"
+import { assignIfDifferent } from "./functions.js"
 import { Constructor } from "./types.js";
 
 export abstract class ConfigureFactory<T extends object, Properties = Partial<T>> extends Factory<T> {
@@ -24,8 +24,5 @@ export abstract class ConfigureFactory<T extends object, Properties = Partial<T>
     protected configure(node: T, properties: Properties) {
         assignIfDifferent(node, properties);
     }
-
-    // // public abstract watch(node: T, callback: Callback<boolean>): Unwatch;
-    // public abstract toComponent: ClassExtender<T, Observable<{ connected: boolean }>>
 
 }

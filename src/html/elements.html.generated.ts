@@ -3,7 +3,7 @@ This file was generated automatically from lib.dom.d.ts,
 which is distributed by Microsoft under the Apache 2.0 license. 
 ***************************************************************/
 
-import { Constructor } from "../core/types.js";
+import { Constructor } from "../core/types.js"
 import { HTMLElementProperties, HTMLElementTagNameMapExact } from "./elements.js";
 
 export interface HTMLAnchorProperties extends HTMLElementProperties {

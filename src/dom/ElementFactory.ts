@@ -1,10 +1,10 @@
-import { Factory } from "../core/Factory.js";
-import { ConfigureFactory } from "../core/ConfigureFactory.js";
-import { assignIfDifferent } from "../core/functions.js";
-import { TextFactory } from "./TextFactory.js";
-import { Constructor, Simplify } from "../core/types.js";
+import { Factory } from "../core/Factory.js"
+import { ConfigureFactory } from "../core/ConfigureFactory.js"
+import { assignIfDifferent } from "../core/functions.js"
+import { TextFactory } from "./TextFactory.js"
+import { Constructor } from "../core/types.js";
 
-export type ElementListeners = { [Key in keyof GlobalEventHandlersEventMap]?: (event: GlobalEventHandlersEventMap[Key]) => void };
+export type ElementListeners = { [Key in keyof GlobalEventHandlersEventMap]?: (event: GlobalEventHandlersEventMap[Key]) => void }
 export type ElementProperties = {
     style?: Partial<CSSStyleDeclaration>,
     className?: string;

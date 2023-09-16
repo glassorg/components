@@ -1,4 +1,4 @@
-import { getActiveFunctionalComponent } from "../core/FunctionalComponent.js";
+import { getActiveFunctionalComponent } from "../core/FunctionalComponent.js"
 import { EffectCallback, useEffect } from "./useEffect.js";
 
 function empty() {
