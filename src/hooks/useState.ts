@@ -1,4 +1,4 @@
-import { getActiveFunctionalComponent } from "../core/FunctionalComponent.js";
+import { getActiveFunctionalComponent } from "../components/private/FunctionalComponent.js";
 
 export function useState<T>(initialValue: T) {
     const component = getActiveFunctionalComponent();

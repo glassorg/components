@@ -1,15 +1,13 @@
 
-import * as svg from "../src/svg/elements.js";
+import { useState } from "../hooks/useState.js";
+import { CustomElementProperties, createCustomElement } from "../html/createCustomElement.js";
+import { Button, Div, Span, Style } from "../html/elements.js";
 
-import { HTMLElementProperties, Button, Div, Span, Style } from "../src/html/elements.js";
-import { customElement } from "../src/html/CustomElementFactory.js";
-import { useState } from "../src/hooks/useState.js";
-
-interface MyCustomProps extends HTMLElementProperties {
+interface MyCustomProps extends CustomElementProperties {
     name: string
 }
 
-const HelloFunctionalShadowRoot = customElement((props: MyCustomProps) => {
+const HelloFunctionalShadowRoot = createCustomElement((props: MyCustomProps) => {
     const [count, setCount] = useState(0);
     const { name, ...rest } = props;
     return Span(
@@ -36,7 +34,7 @@ const HelloFunctionalShadowRoot = customElement((props: MyCustomProps) => {
     );
 }, { shadow: true });
 
-const GrowButton = customElement(function ({ children }) {
+const GrowButton = createCustomElement(function ({ children }) {
     return Button({
         on: {
             click: (e) => {

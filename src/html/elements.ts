@@ -1,31 +1,31 @@
-import { Factory } from "../core/Factory.js"
-import { Constructor, NoUnion } from "../core/types.js"
-import { ElementProperties } from "../dom/ElementFactory.js"
-import { element } from "../dom/ElementFactory.js"
-import { htmlElementToType, HTMLPropertyMap as HTMLPropertyMapGenerated } from "./elements.html.generated.js"
-import "./events.js";
+import { Constructor, NoUnion } from "../components/private/types.js"
+import { ElementProperties, element } from "./private/ElementFactory.js"
+import { htmlElementToType, HTMLPropertyMap as HTMLPropertyMapGenerated } from "./private/elements.html.generated.js"
+import "./private/events.js";
+import { HTMLElementTagNameMapExact } from "./private/types.js"
+import "./private/events.js";
+import { BaseFactory } from "../components/private/BaseFactory.js";
+export * from "./private/types.js"
 
 export type HTMLElementProperties = ElementProperties;
 
-export type HTMLElementTagNameMapExact = { [Key in keyof HTMLElementTagNameMap]: HTMLElementTagNameMap[Key] & { tagName: Key } };
-
-interface HTMLCanvasProperties extends HTMLElementProperties {
+export interface HTMLCanvasProperties extends HTMLElementProperties {
     width: number;
     height: number;
 }
 
 type HTMLScriptPropertiesGenerated = HTMLPropertyMapGenerated["script"]
-interface HTMLScriptProperties extends HTMLScriptPropertiesGenerated {
-    children: Factory<Text>[];
+export interface HTMLScriptProperties extends HTMLScriptPropertiesGenerated {
+    children: BaseFactory<Text>[];
     style?: never;
     className?: never;
     slot?: never;
 }
 
-interface HTMLStyleProperties extends HTMLElementProperties {
+export interface HTMLStyleProperties extends HTMLElementProperties {
     media?: string;
     disabled?: boolean;
-    children: Factory<Text>[];
+    children: BaseFactory<Text>[];
 }
 
 // Here you can override generated property types with narrower types.
@@ -42,6 +42,10 @@ function htmlElement<TagName extends keyof typeof htmlElementToType>(tagName: No
         htmlElementToType[tagName] as Constructor<HTMLElementTagNameMapExact[TagName]>
     );
 }
+
+//  Code to automatically generate them if we want to export a single object.
+// type ElementFactories = { [K in Capitalize<StringKeyof<HTMLElementTagNameMap>>]: CreateFunction<HTMLElementTagNameMap[Lowercase<K>], HTMLPropertyMap[Lowercase<K>]> };
+// export const elements = Object.fromEntries(Object.keys(htmlElementToType).map(tagName => [tagName[0].toUpperCase() + tagName.slice(1), htmlElement(tagName as any)])) as ElementFactories;
 
 export const A = htmlElement("a")
 export const Abbr = htmlElement("abbr")
