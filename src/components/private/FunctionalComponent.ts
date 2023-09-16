@@ -48,7 +48,7 @@ export function createFunctionalComponentClass<C extends Component, P extends ob
         }
 
         requestUpdate() {
-            console.log("requestUpdateAndBuild", { this: this })
+            // console.log("requestUpdateAndBuild", { this: this })
             if (!this._updateCount && this.isConnected) {
                 this.updateAndBuild()
             }
@@ -64,7 +64,7 @@ export function createFunctionalComponentClass<C extends Component, P extends ob
                 return
             }
 
-            console.log(`updateAndBuild`, { this: this })
+            // console.log(`updateAndBuild`, { this: this })
 
             this.hookIndex = 0
             activeFunctionalComponentStack.push(this)

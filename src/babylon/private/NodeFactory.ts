@@ -3,10 +3,14 @@ import { Constructor } from "../../components/private/types.js"
 import { ConfigureFactory } from "../../components/private/ConfigureFactory.js"
 import { Factory } from "../../components/Factory.js"
 
+type MaybeChild = Factory<BABYLON.Node> | null
+
 export interface NodeProperties {
     name?: string
-    children: Factory<BABYLON.Node>[]
+    children: MaybeChild[],
+    scene?: BABYLON.Scene
 }
+
 
 export class NodeFactory<T extends BABYLON.Node, P extends NodeProperties> extends ConfigureFactory<T, P> {
 
@@ -36,7 +40,7 @@ export class NodeFactory<T extends BABYLON.Node, P extends NodeProperties> exten
         }
     }
 
-    protected buildChildren(node: T, childFactories: Factory<BABYLON.Node>[]) {
+    protected buildChildren(node: T, childFactories: MaybeChild[]) {
         let children = getChildren(node)
         let removeChildren: BABYLON.Node[] | undefined
         let length = Math.max(children?.length ?? 0, childFactories.length)
@@ -84,7 +88,7 @@ export function babylonNode<T extends BABYLON.Node, P extends NodeProperties>(
         }
         properties ??= {} as P
         properties.children = otherChildren
-        console.log({ otherChildren })
+        // console.log({ otherChildren })
         return new NodeFactory(type, properties, factoryFunction, ignoreProperties)
     }
     return create as unknown as CreateFunction<T, P>
