@@ -28,5 +28,8 @@
     "vitest": "^0.34.1"
   },
   "author": "krisnye@gmail.com",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "babylonjs": "^6.21.0"
+  }
 }

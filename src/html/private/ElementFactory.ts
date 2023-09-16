@@ -1,8 +1,8 @@
-import { BaseFactory } from "../../components/private/BaseFactory.js"
 import { ConfigureFactory } from "../../components/private/ConfigureFactory.js"
 import { assignIfDifferent } from "../../components/private/functions.js"
 import { TextFactory } from "./TextFactory.js"
 import { Constructor } from "../../components/private/types.js";
+import { Factory } from "../../components/Factory.js";
 
 export type ElementListeners = { [Key in keyof GlobalEventHandlersEventMap]?: (event: GlobalEventHandlersEventMap[Key]) => void }
 export type ElementProperties = {
@@ -11,7 +11,7 @@ export type ElementProperties = {
     id?: string;
     on?: ElementListeners,
     slot?: string;
-    children: BaseFactory<Node>[],
+    children: Factory<Node>[],
 }
 
 export type StyledElement = Element & { style: CSSStyleDeclaration };
@@ -71,7 +71,7 @@ export class ElementFactory<
         }
     }
 
-    protected buildChildren(node: T, childFactories: BaseFactory<Node>[]) {
+    protected buildChildren(node: T, childFactories: Factory<Node>[]) {
         let container = node.shadowRoot ?? node;
         let maybeRecycleChild = container.firstChild;
         //  build the children recycling any old if possible
@@ -117,11 +117,11 @@ export function element<T extends StyledElement, P extends ElementProperties>(
     createFactory = (namespace: ElementNamespace,
         tagName: string,
         type: Constructor<T>,
-        properties: P): BaseFactory<T> => new ElementFactory(namespace, tagName, type, properties)
+        properties: P): Factory<T> => new ElementFactory(namespace, tagName, type, properties)
 ): CreateFunction<T, P> {
-    function create(propertiesOrFirstChild: P, ...otherChildren: (string | BaseFactory<Node>)[]): BaseFactory<T> {
+    function create(propertiesOrFirstChild: P, ...otherChildren: (string | Factory<Node>)[]): Factory<T> {
         let properties: P | undefined;
-        if (propertiesOrFirstChild instanceof BaseFactory || typeof propertiesOrFirstChild === "string") {
+        if (propertiesOrFirstChild instanceof Factory || typeof propertiesOrFirstChild === "string") {
             otherChildren.unshift(propertiesOrFirstChild);
         }
         else {
@@ -129,22 +129,22 @@ export function element<T extends StyledElement, P extends ElementProperties>(
         }
         properties ??= {} as P;
         properties.children = otherChildren.map(child => typeof child === "string" ? new TextFactory(child) : child);
-        return createFactory(namespace, tagName, type, properties) as BaseFactory<T>;
+        return createFactory(namespace, tagName, type, properties) as Factory<T>;
     }
     return create as unknown as CreateFunction<T, P>;
 }
 
-type AddStringIfTextAllowed<T> = T extends BaseFactory<Node>[] ?
-    (BaseFactory<Text>[] extends T ? (string | T[number])[] : T) :
+type AddStringIfTextAllowed<T> = T extends Factory<Node>[] ?
+    (Factory<Text>[] extends T ? (string | T[number])[] : T) :
     T;
 
 type ChildrenType<P extends ElementProperties> =
     AddStringIfTextAllowed<P["children"]>
 
 export type CreateFunction<T extends StyledElement, P extends ElementProperties> = { children } extends P ? {
-    (properties: Omit<P, "children">, ...children: ChildrenType<P>): BaseFactory<T>,
-    (...children: ChildrenType<P>): BaseFactory<T>,
+    (properties: Omit<P, "children">, ...children: ChildrenType<P>): Factory<T>,
+    (...children: ChildrenType<P>): Factory<T>,
 } : {
-    (properties: Omit<P, "children">, ...children: ChildrenType<P>): BaseFactory<T>,
+    (properties: Omit<P, "children">, ...children: ChildrenType<P>): Factory<T>,
 };
 

@@ -1,5 +1,5 @@
 import { Component } from "../Component.js"
-import { BaseFactory } from "./BaseFactory.js"
+import { Factory } from "../Factory.js"
 import { objectsEqualShallow, requestAnimationFrameCallback } from "./functions.js"
 import { Constructor } from "./types.js"
 
@@ -12,7 +12,7 @@ export type FunctionalComponent<BaseType extends Component = Component, Properti
 
 export function createFunctionalComponentClass<C extends Component, P extends object>(
     baseClass: Constructor<C>,
-    update: (properties: P) => BaseFactory<C>,
+    update: (properties: P) => Factory<C>,
     updateCallback = requestAnimationFrameCallback
 ): Constructor<FunctionalComponent<C, P>> {
     class CustomFunctionalComponent extends (baseClass as Constructor<Component>) {

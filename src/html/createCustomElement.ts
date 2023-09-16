@@ -1,4 +1,4 @@
-import { BaseFactory } from "../components/private/BaseFactory.js"
+import { Factory } from "../components/Factory.js"
 import { createFunctionalComponentClass } from "../components/private/FunctionalComponent.js"
 import { Constructor } from "../components/private/types.js"
 import { CreateFunction, ElementProperties, element } from "./private/ElementFactory.js"
@@ -12,16 +12,16 @@ export interface CustomElementProperties extends ElementProperties {
 let customElementCount = 0;
 //  if base type is not specified then we extend span.
 export function createCustomElement<P extends CustomElementProperties>(
-    update: (this: HTMLSpanElement, properties: P) => BaseFactory<HTMLSpanElement & { tagName: "span" }>,
+    update: (this: HTMLSpanElement, properties: P) => Factory<HTMLSpanElement & { tagName: "span" }>,
     options?: { tagName?: string, shadow?: ShadowMode }
 ): CreateFunction<HTMLSpanElement, P>
 //  if base type is specified then we must return a factory of that type from the render function
 export function createCustomElement<P extends CustomElementProperties, Extends extends keyof typeof htmlElementToType>(
-    update: (this: HTMLElementTagNameMapExact[Extends], properties: P) => BaseFactory<HTMLElementTagNameMapExact[Extends]>,
+    update: (this: HTMLElementTagNameMapExact[Extends], properties: P) => Factory<HTMLElementTagNameMapExact[Extends]>,
     options: { tagName?: string, shadow?: ShadowMode, extends: Extends }
 ): CreateFunction<HTMLElementTagNameMapExact[Extends], P>
 export function createCustomElement<P extends CustomElementProperties, Extends extends keyof typeof htmlElementToType>(
-    update: (this: HTMLElementTagNameMapExact[Extends], properties: P) => BaseFactory<HTMLElementTagNameMapExact[Extends]>,
+    update: (this: HTMLElementTagNameMapExact[Extends], properties: P) => Factory<HTMLElementTagNameMapExact[Extends]>,
     options: { tagName?: string, shadow?: ShadowMode, extends?: Extends } = {}
 ): CreateFunction<HTMLElementTagNameMapExact[Extends], P> {
     const { tagName = `custom-element-${customElementCount++}` } = options;

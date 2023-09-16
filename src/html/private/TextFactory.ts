@@ -1,6 +1,6 @@
-import { BaseFactory } from "../../components/private/BaseFactory.js";
+import { Factory } from "../../components/Factory.js";
 
-export class TextFactory extends BaseFactory<Text> {
+export class TextFactory extends Factory<Text> {
 
     constructor(
         protected readonly text: string

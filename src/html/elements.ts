@@ -4,7 +4,7 @@ import { htmlElementToType, HTMLPropertyMap as HTMLPropertyMapGenerated } from "
 import "./private/events.js";
 import { HTMLElementTagNameMapExact } from "./private/types.js"
 import "./private/events.js";
-import { BaseFactory } from "../components/private/BaseFactory.js";
+import { Factory } from "../components/Factory.js";
 export * from "./private/types.js"
 
 export type HTMLElementProperties = ElementProperties;
@@ -16,7 +16,7 @@ export interface HTMLCanvasProperties extends HTMLElementProperties {
 
 type HTMLScriptPropertiesGenerated = HTMLPropertyMapGenerated["script"]
 export interface HTMLScriptProperties extends HTMLScriptPropertiesGenerated {
-    children: BaseFactory<Text>[];
+    children: Factory<Text>[];
     style?: never;
     className?: never;
     slot?: never;
@@ -25,7 +25,7 @@ export interface HTMLScriptProperties extends HTMLScriptPropertiesGenerated {
 export interface HTMLStyleProperties extends HTMLElementProperties {
     media?: string;
     disabled?: boolean;
-    children: BaseFactory<Text>[];
+    children: Factory<Text>[];
 }
 
 // Here you can override generated property types with narrower types.
