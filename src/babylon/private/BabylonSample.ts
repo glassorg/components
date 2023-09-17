@@ -33,7 +33,7 @@ export const BabylonSample = createCustomElement(function () {
     })
 
     return Canvas({
-        width: 400, height: 400, style: { background: "beige", border: "solid 1px black" },
+        width: 400, height: 250, style: { background: "beige", border: "solid 1px black" },
         on: { click: e => { setGround(!ground) } }
     })
 }, { extends: "canvas" })
