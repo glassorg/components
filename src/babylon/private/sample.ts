@@ -1,20 +1,16 @@
 import * as BABYLON from "babylonjs"
 import { Vector3 } from "babylonjs"
 import { createCustomElement } from "../../html/createCustomElement.js"
-import { useState, useStateWithInitializer } from "../../hooks/useState.js"
+import { useState } from "../../hooks/useState.js"
 import { BabylonNode, FreeCamera, Ground, HemisphericLight, Sphere, Transform } from "../nodes.js"
 import { Canvas } from "../../html/elements.js"
-import { useEffect } from "../../hooks/useEffect.js"
+import { useMemo } from "../../hooks/useMemo.js"
 
 export const BabylonSample = createCustomElement(function () {
     const canvas = this
 
-    const [[engine, scene]] = useStateWithInitializer(() => {
-        console.warn("Constructing new engine!")
-        const engine = new BABYLON.Engine(canvas, true)
-        const scene = new BABYLON.Scene(engine)
-        return [engine, scene] as const
-    })
+    const engine = useMemo(() => new BABYLON.Engine(canvas, true));
+    const [scene, setScene] = useState(() => new BABYLON.Scene(engine));
 
     const [ground, setGround] = useState(true)
 

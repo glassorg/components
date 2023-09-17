@@ -1,7 +1,9 @@
 import { getActiveFunctionalComponent } from "../components/private/FunctionalComponent.js";
 
-export function useState<T>(initialValue: T) {
-    return useStateWithInitializer(() => initialValue)
+export function useState<T>(initializer: () => T): [T, (value: T) => void]
+export function useState<T>(initialValue: T): [T, (value: T) => void]
+export function useState<T>(initial: () => T) {
+    return useStateWithInitializer(typeof initial === "function" ? initial : () => initial);
 }
 
 /**
@@ -9,7 +11,7 @@ export function useState<T>(initialValue: T) {
  * @param initializer 
  * @returns 
  */
-export function useStateWithInitializer<T>(initializer: () => T): [T, (value: T) => void] {
+function useStateWithInitializer<T>(initializer: () => T): [T, (value: T) => void] {
     const component = getActiveFunctionalComponent();
     const hookIndex = component.hookIndex++;
     const value = component.hooks[hookIndex] ??= initializer();
