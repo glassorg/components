@@ -17,13 +17,13 @@ export const BabylonSampleKody = createCustomElement(function () {
     const sceneRootName = "scene-root"
     Transform(
         { scene, name: sceneRootName },
-        FreeCamera({ position: new Vector3(0, 5, -10), target: Vector3.Zero() }),
-        HemisphericLight({ direction: new Vector3(0, 1, 0), intensity: 0.7 }),
-        Transform({ position: new Vector3(0, 0, 0) },
-            Sphere({ diameter: 1.3, segments: 32, position: new Vector3(0, 1, 0) }),
-            Sphere({ diameter: 2.2, segments: 32, position: new Vector3(0, 2, 0) }),
-            Sphere({ diameter: 3, segments: 32, position: new Vector3(0, 3, 0) }),
-            ground ? Ground({ name: "ground", width: ground ? 8 : 0, height: 4 }) : null,
+        FreeCamera({ scene, position: new Vector3(0, 5, -10), target: Vector3.Zero() }),
+        HemisphericLight({ scene, direction: new Vector3(0, 1, 0), intensity: 0.7 }),
+        Transform({ scene, position: new Vector3(0, 0, 0) },
+            Sphere({ scene, diameter: 1.3, segments: 32, position: new Vector3(0, 1, 0) }),
+            Sphere({ scene, diameter: 2.2, segments: 32, position: new Vector3(0, 2, 0) }),
+            Sphere({ scene, diameter: 3, segments: 32, position: new Vector3(0, 3, 0) }),
+            ground ? Ground({ scene, name: "ground", width: ground ? 8 : 0, height: 4 }) : null,
         ),
     ).build(scene.getTransformNodeByName(sceneRootName) ?? undefined)
 
