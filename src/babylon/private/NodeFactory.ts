@@ -23,6 +23,8 @@ export class NodeFactory<T extends BABYLON.Node, P extends NodeProperties> exten
         super(type, properties)
     }
 
+    public static currentScene: BABYLON.Scene | null = null;
+
     protected override construct(): T {
         return this.factoryFunction(this.properties)
     }
@@ -88,6 +90,9 @@ export function babylonNode<T extends BABYLON.Node, P extends NodeProperties>(
         }
         properties ??= {} as P
         properties.children = otherChildren
+        if (NodeFactory.currentScene) {
+            properties.scene ??= NodeFactory.currentScene;
+        }
         // console.log({ otherChildren })
         return new NodeFactory(type, properties, factoryFunction, ignoreProperties)
     }
