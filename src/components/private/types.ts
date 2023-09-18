@@ -44,3 +44,5 @@ export type NoUnion<Key> =
 
 export type CancelCallback = () => void
 export type RequestCallback = (callback: () => void) => CancelCallback;
+
+export type MayNotExist<T> = T | null | undefined;

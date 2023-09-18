@@ -1,13 +1,11 @@
 import * as BABYLON from "babylonjs"
-import { Constructor } from "../../components/private/types.js"
+import { Constructor, MayNotExist } from "../../components/private/types.js"
 import { ConfigureFactory } from "../../components/private/ConfigureFactory.js"
 import { Factory } from "../../components/Factory.js"
 
-type MaybeChild = Factory<BABYLON.Node> | null
-
 export interface NodeProperties {
     name?: string
-    children: MaybeChild[],
+    children: MayNotExist<Factory<BABYLON.Node>>[],
     scene?: BABYLON.Scene
 }
 
@@ -42,7 +40,7 @@ export class NodeFactory<T extends BABYLON.Node, P extends NodeProperties> exten
         }
     }
 
-    protected buildChildren(node: T, childFactories: MaybeChild[]) {
+    protected buildChildren(node: T, childFactories: MayNotExist<Factory<BABYLON.Node>>[]) {
         let children = getChildren(node)
         let removeChildren: BABYLON.Node[] | undefined
         let length = Math.max(children?.length ?? 0, childFactories.length)

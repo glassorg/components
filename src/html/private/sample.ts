@@ -27,7 +27,7 @@ const HelloFunctionalShadowRoot = createCustomElement((props: MyCustomProps) => 
         Button({
             on: {
                 click(e) {
-                    setCount(count + 2);
+                    setCount(count + 1);
                 }
             }
         }, "Click Me")

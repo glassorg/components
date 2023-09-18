@@ -3,18 +3,9 @@ import { getActiveFunctionalComponent } from "../components/private/FunctionalCo
 export function useState<T>(initializer: () => T): [T, (value: T) => void]
 export function useState<T>(initialValue: T): [T, (value: T) => void]
 export function useState<T>(initial: () => T) {
-    return useStateWithInitializer(typeof initial === "function" ? initial : () => initial);
-}
-
-/**
- * Like `useState`, but initialized with a function to avoid reconstructing `initialValue`.
- * @param initializer 
- * @returns 
- */
-function useStateWithInitializer<T>(initializer: () => T): [T, (value: T) => void] {
     const component = getActiveFunctionalComponent();
     const hookIndex = component.hookIndex++;
-    const value = component.hooks[hookIndex] ??= initializer();
+    const value = component.hooks[hookIndex] ??= typeof initial === "function" ? initial() : initial;
     return [
         value,
         (newValue: T) => {
@@ -22,4 +13,5 @@ function useStateWithInitializer<T>(initializer: () => T): [T, (value: T) => voi
             component.requestUpdate();
         }
     ];
+
 }
