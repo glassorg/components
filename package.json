@@ -10,7 +10,9 @@
     "watch:build": "tsc -w --preserveWatchOutput",
     "--watch:test": "vitest watch src",
     "watch:web": "vite --port 8080",
-    "test": "vitest run src"
+    "test": "vitest run src",
+    "clean": "rm -rf lib",
+    "deploy": "npm run clean && npm run build && npm publish --access public"
   },
   "exports": {
     "./*": "./lib/*.js"

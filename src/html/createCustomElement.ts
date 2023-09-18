@@ -1,6 +1,6 @@
-import { Factory } from "../components/Factory.js"
-import { createFunctionalComponentClass } from "../components/private/FunctionalComponent.js"
-import { Constructor } from "../components/private/types.js"
+import { Factory } from "../core/Factory.js"
+import { createFunctionalComponentClass } from "../core/private/FunctionalComponent.js"
+import { Constructor } from "../core/types.js"
 import { CreateFunction, ElementProperties, element } from "./private/ElementFactory.js"
 import { htmlElementToType } from "./private/elements.html.generated.js"
 import { HTMLElementTagNameMapExact } from "./elements.js";

@@ -3,7 +3,7 @@ This file was generated automatically from lib.dom.d.ts,
 which is distributed by Microsoft under the Apache 2.0 license. 
 ***************************************************************/
 
-import { type Constructor } from "../../components/private/types.js"
+import { type Constructor } from "../../core/types.js"
 import { HTMLElementProperties } from "../elements.js";
 import { type HTMLElementTagNameMapExact } from "./types.js";
 

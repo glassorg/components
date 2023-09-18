@@ -1,7 +1,7 @@
 
 import { BabylonSample } from "../babylon/private/BabylonSample.js";
 import { BabylonSampleKody } from "../babylon/private/BabylonSampleKody.js";
-import { Factory } from "../components/Factory.js";
+import { Factory } from "../core/Factory.js";
 import { H2, P, Section } from "../html/elements.js";
 import { HTMLSample } from "../html/private/sample.js";
 

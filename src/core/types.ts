@@ -46,3 +46,16 @@ export type CancelCallback = () => void
 export type RequestCallback = (callback: () => void) => CancelCallback;
 
 export type MayNotExist<T> = T | null | undefined;
+
+export type DeepReadonly<T> =
+    T extends Primitive | TypedArray | Blob ? T :
+    T extends Set<infer A> ? ReadonlySet<A> :
+    T extends Map<infer A, infer B> ? ReadonlyMap<A, B> :
+    T extends Array<infer U> ? ReadonlyArray<DeepReadonly<U>> :
+    T extends {} ?
+    {
+        readonly [P in keyof T]: DeepReadonly<T[P]>
+    }
+    : Readonly<T>;
+
+export type Extends<A extends B, B> = true;

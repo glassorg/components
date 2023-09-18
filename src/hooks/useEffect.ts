@@ -1,5 +1,5 @@
-import { FunctionalComponent, getActiveFunctionalComponent } from "../components/private/FunctionalComponent.js"
-import { arraysEqualShallow } from "../components/private/functions.js";
+import { FunctionalComponent, getActiveFunctionalComponent } from "../core/private/FunctionalComponent.js"
+import { arraysEqualShallow } from "../core/private/functions.js";
 
 export type EffectCallback = () => (void | (() => void))
 type EffectHookState = { dispose?: () => void, dependencies: any[] };

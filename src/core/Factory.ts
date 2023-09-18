@@ -1,4 +1,4 @@
-import { Constructor } from "./private/types.js";
+import { Constructor } from "./types.js";
 
 export abstract class Factory<T extends object> {
 

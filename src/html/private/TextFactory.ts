@@ -1,4 +1,4 @@
-import { Factory } from "../../components/Factory.js";
+import { Factory } from "../../core/Factory.js";
 
 export class TextFactory extends Factory<Text> {
 

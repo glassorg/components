@@ -1,7 +1,7 @@
 import * as BABYLON from "babylonjs"
-import { Constructor, MayNotExist } from "../../components/private/types.js"
-import { ConfigureFactory } from "../../components/private/ConfigureFactory.js"
-import { Factory } from "../../components/Factory.js"
+import { Constructor, MayNotExist } from "../../core/types.js"
+import { ConfigureFactory } from "../../core/private/ConfigureFactory.js"
+import { Factory } from "../../core/Factory.js"
 
 export interface NodeProperties {
     name?: string

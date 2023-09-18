@@ -1,7 +1,7 @@
 import { Component } from "../Component.js"
 import { Factory } from "../Factory.js"
 import { objectsEqualShallow, requestAnimationFrameCallback } from "./functions.js"
-import { Constructor } from "./types.js"
+import { Constructor } from "../types.js"
 
 export type FunctionalComponent<BaseType extends Component = Component, Properties extends object = object> = BaseType & {
     properties: Properties

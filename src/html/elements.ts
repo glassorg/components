@@ -1,10 +1,10 @@
-import { Constructor, NoUnion } from "../components/private/types.js"
+import { Constructor, NoUnion } from "../core/types.js"
 import { ElementProperties, element } from "./private/ElementFactory.js"
 import { htmlElementToType, HTMLPropertyMap as HTMLPropertyMapGenerated } from "./private/elements.html.generated.js"
 import "./private/events.js";
 import { HTMLElementTagNameMapExact } from "./private/types.js"
 import "./private/events.js";
-import { Factory } from "../components/Factory.js";
+import { Factory } from "../core/Factory.js";
 export * from "./private/types.js"
 
 export type HTMLElementProperties = ElementProperties;

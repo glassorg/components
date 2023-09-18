@@ -1,5 +1,5 @@
-import { FunctionalComponent } from "../../components/private/FunctionalComponent.js";
-import { Constructor } from "../../components/private/types.js";
+import { FunctionalComponent } from "../../core/private/FunctionalComponent.js";
+import { Constructor } from "../../core/types.js";
 import { HTMLElementProperties, HTMLElementTagNameMapExact } from "../elements.js";
 import { ElementFactory, ElementProperties } from "./ElementFactory.js";
 import { htmlElementToType } from "./elements.html.generated.js";

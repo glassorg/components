@@ -1,8 +1,8 @@
-import { ConfigureFactory } from "../../components/private/ConfigureFactory.js"
-import { assignIfDifferent } from "../../components/private/functions.js"
+import { ConfigureFactory } from "../../core/private/ConfigureFactory.js"
+import { assignIfDifferent } from "../../core/private/functions.js"
 import { TextFactory } from "./TextFactory.js"
-import { Constructor } from "../../components/private/types.js";
-import { Factory } from "../../components/Factory.js";
+import { Constructor } from "../../core/types.js";
+import { Factory } from "../../core/Factory.js";
 
 export type ElementListeners = { [Key in keyof GlobalEventHandlersEventMap]?: (event: GlobalEventHandlersEventMap[Key]) => void }
 export type ElementProperties = {
